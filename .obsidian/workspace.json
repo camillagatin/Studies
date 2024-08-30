@@ -1,0 +1,200 @@
+{
+  "main": {
+    "id": "cd7a94b98edae4f4",
+    "type": "split",
+    "children": [
+      {
+        "id": "d30c3b2e31cbb494",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6f3d2693b44f15c2",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "04667d343e0d652e",
+    "type": "split",
+    "children": [
+      {
+        "id": "a8ab8acbe1f56f99",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6c6176a01dc2d05c",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "byCreatedTimeReverse"
+              }
+            }
+          },
+          {
+            "id": "9b4ea00df535701b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "949c1d019930027e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "6cdad2f90f43499b",
+    "type": "split",
+    "children": [
+      {
+        "id": "4c4c3d484a721886",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3a2630b1b6332482",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          },
+          {
+            "id": "17811011495d2585",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "2f24db1f630a5d36",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "a6a2b9bc5e6c04cc",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "5e2e9f44aabc142f",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "6f3d2693b44f15c2",
+  "lastOpenFiles": [
+    "README.md",
+    "studies",
+    "Java/Criando métodos com argumentos variáveis com Varargs.md",
+    "Java/Estrutura da memória da JVM.md",
+    "Sem título.canvas",
+    "Java/Live Templates.md",
+    "Java/Lendo os parâmetros da linha de comando.md",
+    "Java/Arrays.md",
+    "Java/Collections Java/Collections API.md",
+    "Java/Collections API.md",
+    "Java/ArrayList.md",
+    "Java/Collections Java",
+    "Java/POO/Classe Wrapper.md",
+    "Java/Java Collections",
+    "Java/POO/Atribuindo objeto na composição.md",
+    "Java/POO/Métodos que retornam objetos.md",
+    "Java/Sintaxe Java/Palavras Reservadas.md",
+    "Clean Code/Validação de argumentos.md",
+    "Java/Wrappers e Boxing/Sem título",
+    "Java/Wrappers e Boxing",
+    "Clean Code/Convensões de programação Java.md",
+    "Clean Code/Comentários em código.md",
+    "Java/POO/Modificador final em variáveis locais.md",
+    "Clean Code",
+    "Java/POO/Unified Modeling Language.md",
+    "Java/Fundamentos da Linguagem/Estruturas de Repetição.md",
+    "Java/POO/Classes.md",
+    "Java/POO/Pilares da POO/Pilares da POO.md",
+    "Java/POO/Conceito de POO.md",
+    "Java/Fundamentos da Linguagem/Formatando a saída com printf.md",
+    "Java/Sintaxe Java/Terminal e Argumentos.md",
+    "Java/Fundamentos da Linguagem/Scanner.md",
+    "Java/Sintaxe Java/Documentação.md",
+    "Java/Fundamentos da Linguagem",
+    "Java/Collections Java",
+    "imagens/image 5.avif",
+    "imagens/image 4.avif",
+    "imagens/image 3.avif",
+    "imagens/image 2.avif",
+    "Java/POO/Pilares da POO",
+    "imagens/image 1.avif",
+    "imagens/Pasted image 20240627215513.png",
+    "imagens/Pasted image 20240627215253.png",
+    "imagens/Pasted image 20240627215223.png",
+    "imagens/Pasted image 20240627163725.png",
+    "imagens/Pasted image 20240627163240.png",
+    "Java/POO"
+  ]
+}

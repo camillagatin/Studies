@@ -1,0 +1,16 @@
+{
+  "showLineNumber": true,
+  "spellcheck": false,
+  "propertiesInDocument": "source",
+  "autoConvertHtml": true,
+  "foldHeading": false,
+  "foldIndent": false,
+  "showIndentGuide": true,
+  "readableLineLength": false,
+  "strictLineBreaks": true,
+  "attachmentFolderPath": "imagens",
+  "promptDelete": false,
+  "newFileLocation": "current",
+  "alwaysUpdateLinks": true,
+  "showRibbon": true
+}

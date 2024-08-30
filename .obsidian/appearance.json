@@ -1,0 +1,10 @@
+{
+  "accentColor": "#f07ae6",
+  "cssTheme": "Shiba Inu",
+  "monospaceFontFamily": "JetBrainsMono Nerd Font",
+  "textFontFamily": "Lexend",
+  "baseFontSize": 14,
+  "interfaceFontFamily": "Lexend",
+  "baseFontSizeAction": true,
+  "theme": "obsidian"
+}
