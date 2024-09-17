@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "d30c3b2e31cbb494",
+        "id": "188bb4bcff03546c",
         "type": "tabs",
         "children": [
           {
-            "id": "6f3d2693b44f15c2",
+            "id": "964cb8baa6ff9dca",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Java/Java Collections/ArrayList.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -65,7 +69,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 201.5,
+    "collapsed": true
   },
   "right": {
     "id": "6cdad2f90f43499b",
@@ -81,6 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Java/Java Collections/ArrayList.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Java/Java Collections/ArrayList.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +125,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Java/Java Collections/ArrayList.md"
+              }
             }
           },
           {
@@ -129,7 +138,8 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -138,63 +148,63 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Abrir a troca rápida": false,
-      "graph:Abrir visualização em gráfico": false,
-      "canvas:Criar novo canvas": false,
-      "daily-notes:Abrir a nota de hoje": false,
-      "templates:Inserir modelo": false,
+      "switcher:Abrir a troca rápida": true,
+      "graph:Abrir visualização em gráfico": true,
+      "canvas:Criar novo canvas": true,
+      "daily-notes:Abrir a nota de hoje": true,
+      "templates:Inserir modelo": true,
       "command-palette:Abrir paleta de comandos": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "6f3d2693b44f15c2",
+  "active": "964cb8baa6ff9dca",
   "lastOpenFiles": [
-    "README.md",
-    "studies",
-    "Java/Criando métodos com argumentos variáveis com Varargs.md",
-    "Java/Estrutura da memória da JVM.md",
-    "Sem título.canvas",
-    "Java/Live Templates.md",
-    "Java/Lendo os parâmetros da linha de comando.md",
-    "Java/Arrays.md",
-    "Java/Collections Java/Collections API.md",
-    "Java/Collections API.md",
-    "Java/ArrayList.md",
-    "Java/Collections Java",
-    "Java/POO/Classe Wrapper.md",
-    "Java/Java Collections",
-    "Java/POO/Atribuindo objeto na composição.md",
+    "Java/Java Collections/Boas práticas.md",
+    "Java/Java Collections/Map.md",
+    "Java/Java Collections/Set.md",
+    "Java/Java Collections/ArrayList.md",
+    "Java/Java Collections/Generics.md",
+    "Java/Java Collections/Collections API.md",
+    "Java/POO/Getters e Setters.md",
     "Java/POO/Métodos que retornam objetos.md",
-    "Java/Sintaxe Java/Palavras Reservadas.md",
-    "Clean Code/Validação de argumentos.md",
-    "Java/Wrappers e Boxing/Sem título",
-    "Java/Wrappers e Boxing",
-    "Clean Code/Convensões de programação Java.md",
-    "Clean Code/Comentários em código.md",
+    "Java/Generics",
     "Java/POO/Modificador final em variáveis locais.md",
-    "Clean Code",
-    "Java/POO/Unified Modeling Language.md",
-    "Java/Fundamentos da Linguagem/Estruturas de Repetição.md",
-    "Java/POO/Classes.md",
-    "Java/POO/Pilares da POO/Pilares da POO.md",
-    "Java/POO/Conceito de POO.md",
-    "Java/Fundamentos da Linguagem/Formatando a saída com printf.md",
-    "Java/Sintaxe Java/Terminal e Argumentos.md",
-    "Java/Fundamentos da Linguagem/Scanner.md",
+    "Java/POO/Classe Wrapper.md",
+    "Java/Sintaxe Java/Anatomia das Classes.md",
     "Java/Sintaxe Java/Documentação.md",
-    "Java/Fundamentos da Linguagem",
-    "Java/Collections Java",
-    "imagens/image 5.avif",
-    "imagens/image 4.avif",
-    "imagens/image 3.avif",
-    "imagens/image 2.avif",
-    "Java/POO/Pilares da POO",
-    "imagens/image 1.avif",
-    "imagens/Pasted image 20240627215513.png",
-    "imagens/Pasted image 20240627215253.png",
-    "imagens/Pasted image 20240627215223.png",
-    "imagens/Pasted image 20240627163725.png",
-    "imagens/Pasted image 20240627163240.png",
-    "Java/POO"
+    "Java/Sintaxe Java/Palavras Reservadas.md",
+    "Java/Sintaxe Java/Terminal e Argumentos.md",
+    "Java/Lendo os parâmetros da linha de comando.md",
+    "Java/POO/Pilares da POO/Abstração.md",
+    "Java/Fundamentos da Linguagem/Estruturas Excepcionais.md",
+    "Clean Code/Lei de Demeter (incluindo Train Wreck).md",
+    "imagens/Pasted image 20240912085007.png",
+    "imagens/Pasted image 20240912083228.png",
+    "imagens/hierarquia-excecoes.png",
+    "imagens/heranca.png",
+    "imagens/Pasted image 20240911160750.png",
+    "Java/POO/Atribuindo objeto na composição.md",
+    "Java/POO/Interface.md",
+    "Java/POO/Unified Modeling Language.md",
+    "imagens/abstrata.png",
+    "Java/POO/Construtores.md",
+    "Java/Arrays.md",
+    "Java/Boas Práticas.md",
+    "Java/POO/Records.md",
+    "Java/POO/Pilares da POO/Herança.md",
+    "imagens/record-exemplo.png",
+    "imagens/record.png",
+    "imagens/visibilidade.png",
+    "imagens/construtores.png",
+    "Sem título 1",
+    "Sem título",
+    "Java/Gerenciamento de Memória do Java/Sem título",
+    "Java/POO/UML/multiplicidade para arrays.dio",
+    "Java/POO/UML/construtores.dio",
+    "Java/POO/UML/construtore.dio",
+    "Java/POO/UML",
+    "Java/Sintaxe Java/Pacotes",
+    "Java/POO/Construtores",
+    "Sem título.canvas"
   ]
 }

@@ -27,6 +27,7 @@ Em Java, utilizamos três palavras reservadas e um conceito default para definir
 Como o próprio nome representa, quando nossa classe, método e atributo é definido como public, qualquer outra classe em qualquer outro pacote, poderá visualizar tais recursos.
 ![[Pasted image 20240626213827.png|400]]
 ~~exemplo da imagem no vscode (dio-bootcamp-java)~~
+
 > **Acredite!** Nem tudo precisa ser visto por todos.
 ### Modificador default
 
@@ -53,4 +54,81 @@ Diante destes questionamentos, é que nossas classes precisam continuar mantendo
 A visibilidade de recursos da linguagem não está associada a **interface gráfica**, mas sim, o que as classes conseguem **acessar,** umas das outras.
 
 ### Modificador protected
-ver em [[Pilares da POO]] [[Polimorfismo]]
+ver em [[Polimorfismo]]
+
+
+---
+## Organizando as classes em pacotes
+
+src/erp.estoque
+src/erp.comercial
+```java
+package erp.estoque
+public class Produto {}
+```
+
+```java
+package erp.comercial
+public class Pedido {}
+```
+
+- usar sempre o dominio
+src/com.sitelegal.erp.estoque
+src/com.sitelegal.erp.comercial
+```java
+package com.sitelegal.erp.estoque;
+public class Produto {}
+```
+
+```java
+package com.sitelegal.erp.comercial;
+public class Pedido {}
+```
+
+---
+## Importando Classes de Pacotes
+
+```java
+package com.sitelegal.erp;
+
+import com.sitelegal.erp.comercial.Pedido;
+import com.sitelegal.erp.estoque.Produto;
+
+public class Principal {}
+```
+
+---
+##  Importando membros estáticos (static import) 
+```java
+import com.algaworks.matematica.CalculadoraArea;
+
+public class Principal {
+	public static void main(String[] args) {
+
+		double areaQuadrado = CalculadoraArea.calcularAreaQuadrado(5.2);
+        double areaCirculo = CalculadoraArea.calcularAreaCirculo(10.5);
+
+        System.out.printf("PI: %.2f%n", Calculadora.PI);
+        System.out.printf("Área do quadrado: %.2f%n", areaQuadrado);
+        System.out.printf("Área do círculo: %.2f%n", areaCirculo);
+	}
+}
+```
+
+```java
+// import static com.algaworks.matematica.CalculadoraArea.calcularAreaQuadrado; importando o método static
+import static com.algaworks.matematica.CalculadoraArea.*;
+
+public class Principal {
+    public static void main(String[] args) {
+    
+        double areaQuadrado = calcularAreaQuadrado(5.2);
+        double areaCirculo = calcularAreaCirculo(10.5);
+
+        System.out.printf("PI: %.2f%n", PI);
+        System.out.printf("Área do quadrado: %.2f%n", areaQuadrado);
+        System.out.printf("Área do círculo: %.2f%n", areaCirculo);
+    }
+
+}
+```

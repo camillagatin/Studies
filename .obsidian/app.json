@@ -12,5 +12,6 @@
   "promptDelete": false,
   "newFileLocation": "current",
   "alwaysUpdateLinks": true,
-  "showRibbon": true
+  "showRibbon": false,
+  "showInlineTitle": true
 }

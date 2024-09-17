@@ -79,3 +79,235 @@ public class SistemaCadastro {
 	}
 }
 ```
+
+---
+## Sobrecarga de Construtores
+```java
+public class Produto {
+
+    static final int QUANTIDADE_ESTOQUE_INICIAL = 100;
+
+    String nome;
+    int quantidadeEstoque;
+
+    Produto() {
+        this.nome = "Sem nome";
+        this.quantidadeEstoque = QUANTIDADE_ESTOQUE_INICIAL;
+    }
+
+    Produto(String nome) {
+        this.nome = nome;
+        this.quantidadeEstoque = QUANTIDADE_ESTOQUE_INICIAL;
+    }
+
+    Produto(String nome, int estoqueInicial) {
+        this.nome = nome;
+        this.quantidadeEstoque = estoqueInicial;
+    }
+
+}
+```
+
+```java
+public class Principal {
+
+    public static void main(String[] args) {
+        Produto produto1 = new Produto("Picanha 1kg (peça)");
+        Produto produto2 = new Produto("Arroz", 35);
+        Produto produto3 = new Produto();
+
+        System.out.println(produto1.nome);
+        System.out.println(produto1.quantidadeEstoque);
+
+        System.out.println(produto2.nome);
+        System.out.println(produto2.quantidadeEstoque);
+
+        System.out.println(produto3.nome);
+        System.out.println(produto3.quantidadeEstoque);
+    }
+
+}
+```
+
+---
+## Boas Práticas: Valide os argumentos de construtores
+```java
+import java.util.Objects;
+
+public class Produto {
+
+    static final int QUANTIDADE_ESTOQUE_INICIAL = 100;
+
+    String nome;
+    int quantidadeEstoque;
+
+    Produto() {
+        this.nome = "Sem nome";
+        this.quantidadeEstoque = QUANTIDADE_ESTOQUE_INICIAL;
+    }
+
+    Produto(String nome) {
+        Objects.requireNonNull(nome, "Nome é obrigatório");
+
+        this.nome = nome;
+        this.quantidadeEstoque = QUANTIDADE_ESTOQUE_INICIAL;
+    }
+
+    Produto(String nome, int estoqueInicial) {
+        Objects.requireNonNull(nome, "Nome é obrigatório");
+
+        if (estoqueInicial < 0) {
+            throw new IllegalArgumentException("Estoque inicial não pode ser negativo");
+        }
+
+        this.nome = nome;
+        this.quantidadeEstoque = estoqueInicial;
+    }
+
+}
+```
+
+```java
+public class Principal {
+
+    public static void main(String[] args) {
+        Produto produto1 = new Produto("Picanha 1kg (peça)");
+
+        // Exceção em tempo de execução
+        Produto produto2 = new Produto(null, -35);
+
+        Produto produto3 = new Produto();
+
+        System.out.println(produto1.nome);
+        System.out.println(produto1.quantidadeEstoque);
+
+        System.out.println(produto2.nome);
+        System.out.println(produto2.quantidadeEstoque);
+
+        System.out.println(produto3.nome);
+        System.out.println(produto3.quantidadeEstoque);
+    }
+
+}
+```
+
+---
+## Encadeamento de chamadas de construtores
+```java
+import java.util.Objects;
+
+public class Produto {
+
+    static final int QUANTIDADE_ESTOQUE_INICIAL = 100;
+
+    String nome;
+    int quantidadeEstoque;
+
+    Produto() {
+        this("Sem nome");
+    }
+
+    Produto(String nome) {
+        this(nome, QUANTIDADE_ESTOQUE_INICIAL);
+    }
+
+    Produto(String nome, int estoqueInicial) {
+        Objects.requireNonNull(nome, "Nome é obrigatório");
+
+        if (estoqueInicial < 0) {
+            throw new IllegalArgumentException("Estoque inicial não pode ser negativo");
+        }
+
+        this.nome = nome;
+        this.quantidadeEstoque = estoqueInicial;
+    }
+
+}
+```
+
+```java
+public class Principal {
+
+    public static void main(String[] args) {
+        Produto produto1 = new Produto("Picanha 1kg (peça)");
+        Produto produto2 = new Produto("Arroz", 35);
+        Produto produto3 = new Produto();
+
+        System.out.println(produto1.nome);
+        System.out.println(produto1.quantidadeEstoque);
+
+        System.out.println(produto2.nome);
+        System.out.println(produto2.quantidadeEstoque);
+
+        System.out.println(produto3.nome);
+        System.out.println(produto3.quantidadeEstoque);
+    }
+
+}
+```
+
+---
+## [[Unified Modeling Language#Construtores|Diagrama de Classes]]
+![[construtores.png]]
+
+---
+## Modificadir final em variáveis de instância
+
+```java
+import java.util.Objects;
+import java.util.UUID;
+
+public class Produto {
+
+    static final int QUANTIDADE_ESTOQUE_INICIAL = 100;
+
+    final String codigo;
+    String nome;
+    int quantidadeEstoque;
+
+    Produto() {
+        this("Sem nome");
+    }
+
+    Produto(String nome) {
+        this(nome, QUANTIDADE_ESTOQUE_INICIAL);
+    }
+
+    Produto(String nome, int estoqueInicial) {
+        Objects.requireNonNull(nome, "Nome é obrigatório");
+
+        if (estoqueInicial < 0) {
+            throw new IllegalArgumentException("Estoque inicial não pode ser negativo");
+        }
+
+        this.nome = nome;
+        this.quantidadeEstoque = estoqueInicial;
+        this.codigo = UUID.randomUUID().toString();
+    }
+
+}
+```
+
+```java
+public class Principal {
+
+    public static void main(String[] args) {
+        Produto produto1 = new Produto("Picanha 1kg (peça)");
+        Produto produto2 = new Produto("Arroz", 35);
+        Produto produto3 = new Produto();
+
+        System.out.println(produto1.codigo);
+        System.out.println(produto1.nome);
+        System.out.println(produto1.quantidadeEstoque);
+
+        System.out.println(produto2.codigo);
+        System.out.println(produto2.nome);
+        System.out.println(produto2.quantidadeEstoque);
+
+        System.out.println(produto3.codigo);
+        System.out.println(produto3.nome);
+        System.out.println(produto3.quantidadeEstoque);
+    }
+
+}
+```

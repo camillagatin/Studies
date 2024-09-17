@@ -1,0 +1,148 @@
+/*
+* ─────────────────────────────────────────────────────────────
+* Custom Code Settings
+* ─────────────────────────────────────────────────────────────
+*/
+
+/* @settings
+name: Codeblock Settings
+id: Codeblock Settings
+settings:
+
+-
+  id: Codeblock Style Settings
+  title: Codeblock Style Settings
+  description: You can pick your colors for code variables here.
+  type: heading
+  level: 1
+  collapsed: true
+
+- 
+    id: code-background  
+    title: Code background color  
+    description: Background for code blocks  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-normal  
+    title: Code text color  
+    description: Color of code when syntax highlighting is not present  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: syntax-highlighting  
+    title: Syntax highlighting  
+    type: heading  
+    level: 3  
+    collapsed: false  
+- 
+    id: code-comment  
+    title: "Syntax: comments"  
+    description: Syntax highlighting for comments  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-function  
+    title: "Syntax: functions"  
+    description: Syntax highlighting for functions  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-keyword  
+    title: "Syntax: keywords"  
+    description: Syntax highlighting for keywords  
+    type: variable-themed-color  
+    format: hex
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-important  
+    title: "Syntax: important"  
+    description: Syntax highlighting for important text  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-operator  
+    title: "Syntax: operators"  
+    description: Syntax highlighting for operators  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-property  
+    title: "Syntax: properties"  
+    description: Syntax highlighting for properties  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-punctuation  
+    title: "Syntax: punctuation"  
+    description: Syntax highlighting for punctuation  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'  
+    default-dark: '#'  
+- 
+    id: code-string  
+    title: "Syntax: strings"  
+    description: Syntax highlighting for strings  
+    type: variable-themed-color  
+    format: hex  
+    default-light: '#'
+    default-dark: '#'
+- 
+    id: code-tag
+    title: "Syntax: tags"
+    description: Syntax highlighting for tags
+    type: variable-themed-color
+    format: hex
+    default-light: '#'
+    default-dark: '#'
+- 
+    id: code-value
+    title: "Syntax: values"
+    description: Syntax highlighting for values
+    type: variable-themed-color
+    format: hex
+    default-light: '#'
+    default-dark: '#'
+*/
+
+.theme-light {
+    --code-normal: #4d4d4c;
+    --code-comment: #b4b4b4;
+    --code-punctuation: #4d4d4c;
+    --code-tag: #ff79c6;
+    --code-value: #79d4ff;
+    --code-string: #50fa7b;
+    --code-property: #f8f8b7;
+    --code-function: #ff79c6;
+    --code-keyword: #bd93f9;
+    --code-important: #4d4d4c;
+}
+
+.theme-dark {
+    --code-normal: #f8f8f2;
+    --code-comment: #6272a4;
+    --code-punctuation: #f8f8f2;
+    --code-tag: #ff79c6;
+    --code-value: #8be9fd;
+    --code-string: #50fa7b;
+    --code-property: #f1fa8c;
+    --code-function: #ff79c6;
+    --code-keyword: #bd93f9;
+    --code-important: #f8f8f2;
+}

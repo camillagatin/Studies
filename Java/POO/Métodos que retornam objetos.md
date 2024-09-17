@@ -1,14 +1,11 @@
 
-
-IndiceMassaCorporal.java
-```java
+```java title:IndiceMassaCorporal.java
 double resultado;
 double peso;
 double altura;
 ```
 
-Paciente.java
-```java
+```java title:Paciente.java
 double peso;
 double altura;
 

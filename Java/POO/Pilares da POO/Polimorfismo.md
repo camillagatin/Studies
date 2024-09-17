@@ -49,4 +49,65 @@ public abstract class ServicoMensagemInstantanea {
 	}	
 }
 ```
+---
+### Upcasting
+É fazer um objeto se passar por um objeto que seja um supertipo dele. Ele sempre funcionará já que todo objeto é completamente compatível com um tipo do qual ele foi derivado. Como sempre pode ser realizado, é possível fazer implicitamente, ou seja, o compilador faz por você quando for necessário.
 
+É muito comum ele ocorrer como parâmetro de um método que usará __polimorfismo__. O chamador manda como argumento um objeto que é o subtipo, o método recebe um parâmetro como se fosse o supertipo, mas funciona como um subtipo. Mas note que o polimorfismo é um mecanismo auxiliar e não ligado diretamente ao _casting_. É considerado uma coerção em tempo de compilação.
+
+Algumas pessoas gostam de chamar de promoção de tipo.
+
+### Downcasting
+É quando o objeto se passa como se fosse um subtipo dele. Não há garantias que funcione (pode lançar uma `ClassCastException`, o que obviamente é um erro de programação) e pode haver necessidade de conversões. O compilador só aceita se ele puder provar que o objeto se encaixará perfeitamente e seja de fato aquele objeto. Por isso deve ser explicitado pelo programador quando deseja essa ação. A coerção ocorre em tempo de execução.
+
+Algumas pessoas gostam de chamar de demoção de tipo (apesar de ser um neologismo).
+
+Existe um padrão normalmente usado para evitar a exceção quando não se tem certeza que dará certo:
+
+```java
+obj instanceof Tipo ? (Tipo)obj : null
+```
+
+Nesse exemplo se o objeto não for do tipo adequado, ele criará um nulo e nem tentará o _cast_. Obviamente que qualquer tentativa de acesso ao objeto gerado será problemático, então é preciso verificar se o objeto é nulo antes de tentar acessá-lo, caso contrário, só trocará de erro.
+
+Exemplos:
+
+```java
+class Animal { 
+    public void makesNoise() {
+        System.out.println("silence");
+    }
+}
+class Dog extends Animal { 
+    public void makesNoise() {
+        System.out.println("au au");
+    }
+}
+class Cat extends Animal { 
+    public void makesNoise() {
+        System.out.println("miau");
+    }
+}
+class Ideone {
+    public static void main(String[] args) {
+        Dog dog = new Dog();      
+        Animal animal = new Animal();
+        Animal animal2 = new Dog();
+        Animal animal3 = new Cat();
+        dog.makesNoise();
+        animal.makesNoise);
+        animal2.makesNoise(); //concretamente é um cachorro
+        animal3.makesNoise(); //concretamente é um gato
+        System.out.println("-- Castings agora --");
+        ((Animal)dog).makesNoise(); //upcasting
+        ((Dog)animal2).makesNoise(); //downcasting, funciona
+        ((Dog)animal3).makesNoise(); //downcasting, dá erro porque um gato não é um cachorro
+        ((Dog)animal).makesNoise(); //downcasting, dá erro aqui
+    }
+}
+```
+Quando não há garantias que o objeto terá tudo o que se espera daquele tipo, o _cast_ falhará. É o caso óbvio de um gato tentando se passar por um cachorro. Quando o animal genérico tenta se passar por um cachorro também não dá. Embora coincidentemente nesse exemplo até poderia funcionar, o compilador não pode provar isto. O programador que está vendo todo o código sabe, mas nem sempre ele poderá ver todas as classes. E mais, é possível uma manutenção modificar a classe e o que funcionava deixar de funcionar. Então tem que ir pelo caminho seguro.
+
+De uma maneira geral isto funciona igual em todas as linguagens que possuem herança.
+
+---

@@ -21,6 +21,31 @@ Em diagrama, a estrutura das classes é constituída por:
 - ==Atributos:== Propriedades e/ou características;
 - ==Operações:== Ações e/ou métodos.
 
+### Construtores
+[[Construtores#Unified Modeling Language Construtores Diagrama de Classes|construtores]]
+![[construtores.png]]
+
+### Multiplicidade para arrays
+[[Arrays#Unified Modeling Language Multiplicidade para arrays Diagrama de Classes Multiplicidade para arrays|arrays]]
+![[multiplicidade para arrays.png]]
+
+### Visibilidade public, package e private
+![[visibilidade.png]]
+
+### Records
+[[Java/Boas Práticas#Unified Modeling Language Records Diagrama de Classes Records|records]]
+
+![[record.png]] ![[record-exemplo.png|138]]
+
+### [[Herança]]
+![[heranca.png]]
+
+### Classe Abstrata
+[[Abstração#Unified Modeling Language Classe Abstrata Diagrama|abstrata]]
+![[abstrata.png]]
+
+
+---
 ## Relacionamentos
 
 Em um diagrama, as classes podem existir de forma independente, mas obviamente haverá, em alguma etapa da aplicação a necessidade de algumas se relacionarem, o que devemos compreender é, o nível de dependência entre elas:

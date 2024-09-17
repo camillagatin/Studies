@@ -71,3 +71,68 @@ Seguindo algumas convenções, as nossas classes são classificadas como:
 - **Classe utilitária (util)**: classe que contém recursos comuns, à toda nossa aplicação.
 
 ![[Pasted image 20240626205833.png|400]]
+
+---
+## Múltiplas classes não-públicas em um único arquivo
+```java
+package com.algaworks.erp.estoque;
+
+import java.util.Objects;
+import java.util.UUID;
+
+public class Produto {
+
+    static final int QUANTIDADE_ESTOQUE_INICIAL = 100;
+
+    private final String codigo;
+    private String nome;
+    private int quantidadeEstoque;
+    private Fornecedor fornecedor;
+    private Categoria categoria;
+
+    public Produto() {
+        this("Sem nome");
+    }
+
+    public Produto(String nome) {
+        this(nome, QUANTIDADE_ESTOQUE_INICIAL);
+    }
+
+    private Produto(String nome, int estoqueInicial) {
+        Objects.requireNonNull(nome, "Nome é obrigatório");
+
+        if (estoqueInicial < 0) {
+            throw new IllegalArgumentException("Estoque inicial não pode ser negativo");
+        }
+
+        this.nome = nome;
+        this.quantidadeEstoque = estoqueInicial;
+        this.codigo = gerarCodigo();
+    }
+
+    private String gerarCodigo() {
+        return UUID.randomUUID().toString();
+    }
+
+    public void imprimir() {
+        System.out.printf("%s x %d itens", nome, quantidadeEstoque);
+    }
+
+}
+// só é possível ter outras classes dentro de uma se elas não forem públicas
+// classes públicas precisam do seu arquivo .java
+class Fornecedor {
+}
+
+class Categoria {
+}
+
+class Principal {
+
+    public static void main(String[] args) {
+        Produto produto = new Produto("Suco de uva");
+        produto.imprimir();
+    }
+
+}
+```

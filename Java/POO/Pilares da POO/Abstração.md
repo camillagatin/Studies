@@ -57,3 +57,7 @@ public class Telegram extends ServicoMensagemInstantanea {
 }
 
 ```
+---
+### [[Unified Modeling Language#Classe Abstrata|Diagrama]]
+![[abstrata.png]]
+

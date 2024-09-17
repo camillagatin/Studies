@@ -459,3 +459,7 @@ for (Strings[] cidadesPorEstado : todasCidades) {
 }
 
 ```
+
+---
+## [[Unified Modeling Language#Multiplicidade para arrays|Diagrama de Classes: Multiplicidade para arrays]]
+![[multiplicidade para arrays.png]]
