@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "1146839c4543be24",
+        "id": "77c63961bdfb0eab",
         "type": "tabs",
         "children": [
           {
-            "id": "bc19d68d69d877d1",
+            "id": "5510214c1fc97296",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Java/Date e Calendar.md",
+                "file": "Java/API Date, Time e Calendar/Date Time API.md",
                 "mode": "source",
                 "source": false
               }
@@ -69,7 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 201.5,
+    "width": 210.5,
     "collapsed": true
   },
   "right": {
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Java/Date e Calendar.md",
+                "file": "Java/API Date, Time e Calendar/Date Time API.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Java/Date e Calendar.md",
+                "file": "Java/API Date, Time e Calendar/Date Time API.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Java/Date e Calendar.md"
+                "file": "Java/API Date, Time e Calendar/Date Time API.md"
               }
             }
           },
@@ -157,11 +157,16 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "bc19d68d69d877d1",
+  "active": "5510214c1fc97296",
   "lastOpenFiles": [
-    "Java/Trabalhando com números.md",
-    "Java/Date e Calendar.md",
+    "imagens/duracao-unidade-campo.png",
+    "imagens/partes-da-data.png",
+    "imagens/Pasted image 20240919150213.png",
+    "Java/API Date, Time e Calendar/Date e Calendar.md",
+    "Java/API Date, Time e Calendar/Date Time API.md",
+    "Java/API Date, Time e Calendar",
     "Java/Trabalhando com strings.md",
+    "Java/Trabalhando com números.md",
     "Java/POO/Enums.md",
     "Java/Strings",
     "Java/POO/Unified Modeling Language.md",
@@ -188,8 +193,6 @@
     "Java/Sintaxe Java/Terminal e Argumentos.md",
     "Java/Lendo os parâmetros da linha de comando.md",
     "Java/POO/Pilares da POO/Abstração.md",
-    "Java/Fundamentos da Linguagem/Estruturas Excepcionais.md",
-    "Clean Code/Lei de Demeter (incluindo Train Wreck).md",
     "imagens/Pasted image 20240912085007.png",
     "imagens/Pasted image 20240912083228.png",
     "imagens/hierarquia-excecoes.png",
@@ -197,14 +200,11 @@
     "imagens/Pasted image 20240911160750.png",
     "imagens/abstrata.png",
     "imagens/record-exemplo.png",
-    "imagens/record.png",
-    "imagens/visibilidade.png",
     "Sem título 1",
     "Java/Gerenciamento de Memória do Java/Sem título",
     "Java/POO/UML/multiplicidade para arrays.dio",
     "Java/POO/UML/construtores.dio",
     "Java/POO/UML/construtore.dio",
-    "Java/POO/UML",
     "Sem título.canvas"
   ]
 }
