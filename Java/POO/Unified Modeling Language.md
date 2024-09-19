@@ -44,6 +44,11 @@ Em diagrama, a estrutura das classes é constituída por:
 [[Abstração#Unified Modeling Language Classe Abstrata Diagrama|abstrata]]
 ![[abstrata.png]]
 
+### Enum
+[[Enums#Unified Modeling Language Enum Diagrama de Classes|enums]]
+![[diagrama-enum.png]]
+
+
 
 ---
 ## Relacionamentos

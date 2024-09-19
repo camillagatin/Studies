@@ -91,3 +91,63 @@ public class ColecoesImutaveis {
 - **Facilita a depuração:** O estado imutável torna o código mais fácil de depurar, pois não há necessidade de rastrear mudanças inesperadas.
 - **Promove um estilo de programação mais funcional:** O uso de coleções imutáveis incentiva um estilo de programação mais funcional, que é considerado mais conciso e elegante.
 ---
+## Usando a API de List para Manipular Arrays
+A API de List em Java fornece uma interface flexível e poderosa para trabalhar com sequências de objetos. Embora arrays sejam estruturas de dados mais básicas, a API de List oferece diversas funcionalidades que podem simplificar e otimizar a manipulação de dados em arrays.
+
+### Por que usar List para manipular arrays?
+- **Flexibilidade:** Listas oferecem um tamanho dinâmico, ao contrário de arrays que têm um tamanho fixo.
+- **Funcionalidades adicionais:** Listas provêem métodos para adicionar, remover, buscar e ordenar elementos, além de outras operações úteis.
+- **Facilidade de uso:** A sintaxe da API de List é mais intuitiva e concisa do que as operações com arrays nativos.
+- **Integração com outras coleções:** Listas se integram perfeitamente com outras coleções do Java Collections Framework, como Sets e Maps.
+
+### Convertendo arrays para Listas
+Para converter um array em uma lista, você pode utilizar o método `Arrays.asList()`:
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public class ArrayToList {
+    public static void main(String[] args) {
+        String[] nomes = {"João", "Maria", "Pedro"};
+        List<String> listaNomes = Arrays.asList(nomes);
+
+        // Agora você pode usar os métodos da interface List para manipular a lista
+        listaNomes.add("Ana"); // Irá lançar UnsupportedOperationException
+    }
+}
+```
+
+**Atenção:** A lista retornada por `Arrays.asList()` é **backed by the array**. Isso significa que qualquer modificação na lista (`listaNomes.set()`) refletirá no array original e vice-versa. **No entanto, a lista criada é imutável**. Você não pode adicionar ou remover elementos, apenas acessar os elementos existentes.
+
+### Criando uma nova lista a partir de um array
+Se você precisa de uma lista totalmente independente do array original, você pode criar uma nova lista e adicionar os elementos do array à nova lista:
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ArrayToList {
+    public static void main(String[] args) {
+        String[]    nomes = {"João", "Maria", "Pedro"};
+        List<String> listaNomes = new ArrayList<>(Arrays.asList(nomes));
+
+        // Agora você pode adicionar elementos à nova lista
+        listaNomes.add("Ana");
+    }
+}
+```
+
+### Vantagens de usar List para manipular arrays
+- **Facilidade de leitura e escrita:** A sintaxe da API de List é mais clara e concisa do que as operações com arrays.
+- **Funcionalidades adicionais:** Métodos como `sort()`, `contains()`, `indexOf()`, entre outros, facilitam a manipulação de dados.
+- **Integração com outras coleções:** Listas podem ser facilmente utilizadas em conjunto com outras coleções, como Sets e Maps.
+
+### Quando usar arrays e quando usar listas?
+- **Arrays:**
+    - Quando você precisa de um tamanho fixo e acesso rápido aos elementos por índice.
+    - Em situações onde a performance é crítica e você precisa de um controle mais granular sobre a memória.
+- **Listas:**
+    - Quando você precisa de um tamanho dinâmico e funcionalidades como adicionar, remover e ordenar elementos.
+    - Quando a legibilidade e a facilidade de uso são importantes.
+---

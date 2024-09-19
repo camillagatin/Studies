@@ -66,3 +66,8 @@ public class SistemaIbge {
 	}
 }
 ```
+
+### [[Unified Modeling Language#Enum|Diagrama de Classes]]
+![[diagrama-enum.png]]
+
+---
