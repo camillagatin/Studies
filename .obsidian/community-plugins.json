@@ -1,7 +1,6 @@
 [
   "obsidian-style-settings",
   "highlightr-plugin",
-  "table-editor-obsidian",
-  "dataview",
-  "code-styler"
+  "code-styler",
+  "table-editor-obsidian"
 ]

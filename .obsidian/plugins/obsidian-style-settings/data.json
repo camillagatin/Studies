@@ -84,5 +84,7 @@
   "shiba-theme-settings@@h3-font": "Montserrat",
   "shiba-theme-settings@@h4-font": "Montserrat",
   "shiba-theme-settings@@h5-font": "Montserrat",
-  "shiba-theme-settings@@h6-font": "Montserrat"
+  "shiba-theme-settings@@h6-font": "Montserrat",
+  "shiba-theme-settings@@shib-card-layout-actions": true,
+  "shiba-theme-settings@@shib-card-shadows": true
 }

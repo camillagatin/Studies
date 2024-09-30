@@ -79,6 +79,157 @@ public class ComputadorPedrinho {
 ~~(ver projeto banco em algaworks exemplos)~~
 
 ---
+## Superclasse em Java: A Base da Herança
+
+**O que é uma superclasse em Java?**
+Em Java, uma superclasse, também conhecida como classe pai ou classe base, é uma classe que serve como modelo para outras classes. Ela define atributos e métodos que podem ser herdados por suas subclasses. Essa relação entre classes é fundamental para o conceito de herança na programação orientada a objetos.
+
+**Por que usar superclasses?**
+* **Reutilização de código:** Ao criar uma superclasse, você define um conjunto de características comuns a várias classes. As subclasses podem herdar essas características, evitando a duplicação de código.
+* **Hierarquia de classes:** As superclasses formam uma hierarquia, onde cada classe pode ter uma ou mais subclasses. Essa hierarquia reflete relações "é um" (por exemplo, um cachorro é um animal).
+* **Polimorfismo:** A herança permite que objetos de diferentes classes sejam tratados como se fossem de uma classe pai comum, o que é a base do polimorfismo.
+
+**Exemplo:**
+```java
+class Animal {
+    String nome;
+
+    void emitirSom() {
+        System.out.println("Fazendo algum som");
+    }
+}
+
+class Cachorro extends Animal {
+    void latir() {
+        System.out.println("Au au");
+    }
+}
+```
+
+Neste exemplo:
+* `Animal` é a superclasse. Ela define um atributo `nome` e um método `emitirSom()`.
+* `Cachorro` é a subclasse. Ela herda todos os atributos e métodos de `Animal` e adiciona um novo método específico: `latir()`.
+
+**Como funciona a herança?**
+* **Herdando atributos e métodos:** Uma subclasse herda todos os atributos e métodos não privados da sua superclasse.
+* **Sobrescrita de métodos:** Uma subclasse pode sobrescrever um método da superclasse para fornecer uma implementação específica.
+* **Construtores:** Os construtores não são herdados. Ao criar um objeto de uma subclasse, o construtor da superclasse é chamado primeiro para inicializar os atributos herdados.
+
+**Palavra-chave `super`:**
+A palavra-chave `super` é usada para:
+* **Chamar construtores da superclasse:** `super(argumentos)`
+* **Acessar membros da superclasse:** `super.metodo()` ou `super.atributo`
+
+**Exemplo com `super`:**
+```java
+class Cachorro extends Animal {
+    String raca;
+
+    Cachorro(String nome, String raca) {
+        super(nome); // Chama o construtor da superclasse
+        this.raca = raca;
+    }
+}
+```
+
+**Vantagens da herança:**
+* **Organização do código:** Cria uma estrutura hierárquica clara para as classes.
+* **Reutilização de código:** Evita a duplicação de código.
+* **Extensibilidade:** Permite criar novas classes especializadas a partir de classes existentes.
+* **Polimorfismo:** Facilita o desenvolvimento de código mais flexível e adaptável.
+## Mais Exemplos Usando a Palavra-chave `super` em Java
+
+### 1. Sobrescrita de Métodos e Acesso ao Método Original:
+```java
+class Animal {
+    void emitirSom() {
+        System.out.println("Fazendo algum som");
+    }
+}
+```
+
+```java
+class Cachorro extends Animal {
+    @Override
+    void emitirSom() {
+        super.emitirSom(); // Chama o método da superclasse
+        System.out.println("Au au");
+    }
+}
+```
+Neste exemplo, o método `emitirSom()` da classe `Cachorro` sobrescreve o método da classe `Animal`. Ao usar `super.emitirSom()`, chamamos a implementação original da superclasse antes de adicionar o comportamento específico do cachorro.
+
+### 2. Acesso a Atributos da Superclasse:
+```java
+class Pessoa {
+    String nome;
+
+    Pessoa(String nome) {
+        this.nome = nome;
+    }
+}
+```
+
+```java
+class Estudante extends Pessoa {
+    int matricula;
+
+    Estudante(String nome, int matricula) {
+        super(nome);
+        this.matricula = matricula;
+    }
+
+    void mostrarInformacoes() {
+        System.out.println("Nome: " + super.nome); // Acessa o atributo nome da superclasse
+        System.out.println("Matrícula: " + matricula);
+    }
+}
+```
+Aqui, o método `mostrarInformacoes()` da classe `Estudante` acessa o atributo `nome` da superclasse `Pessoa` usando `super.nome`.
+
+### 3. Construtores em Cadeia:
+```java
+class Forma {
+    int lados;
+
+    Forma(int lados) {
+        this.lados = lados;
+    }
+}
+```
+
+```java
+class Quadrado extends Forma {
+    Quadrado(int lado) {
+        super(4); // Chama o construtor da superclasse com 4 lados
+    }
+}
+```
+Neste caso, o construtor de `Quadrado` chama o construtor de `Forma` para inicializar o número de lados.
+
+### 4. Métodos Estáticos:
+**Importante:** Métodos estáticos pertencem à classe, não à instância, portanto, não podem ser acessados diretamente usando `super`. Para acessar um método estático de uma superclasse, você o chama diretamente pelo nome da classe:
+```java
+class Util {
+    static void imprimirMensagem(String msg) {
+        System.out.println(msg);
+    }
+}
+```
+
+```java
+class MinhaClasse extends Util {
+    void meuMetodo() {
+        Util.imprimirMensagem("Mensagem da classe Util");
+    }
+}
+```
+
+### Quando usar `super`?
+* **Chamar construtores da superclasse:** Para garantir a inicialização correta dos atributos herdados.
+* **Sobrescrever métodos:** Para fornecer uma implementação específica de um método herdado.
+* **Acessar membros da superclasse:** Quando você precisa usar um membro da superclasse que foi sobrescrito ou quando você deseja acessar um atributo privado da superclasse (embora isso não seja recomendado, pois viola o encapsulamento).
+---
 ## Chamando Método da Superclasse com Super
 Conta.java
 ```java

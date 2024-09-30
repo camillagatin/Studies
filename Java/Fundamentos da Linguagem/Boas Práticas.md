@@ -330,6 +330,52 @@ public class Principal2 {
 ```
 ---
 # Records
+**O que são Records?**
+Introduzidos no Java 14, os *records* são uma forma concisa e elegante de definir classes cujos principais objetivos são armazenar dados e fornecer acesso a eles. Eles são idealmente adequados para representar **dados imutáveis**.
+
+**Por que usar Records?**
+* **Concisão:** A sintaxe dos records é mais curta e direta do que a de classes tradicionais, especialmente para classes que servem apenas para encapsular dados.
+* **Imuttabilidade:** Ao usar records, você incentiva a criação de dados imutáveis, o que contribui para a escrita de código mais seguro e previsível.
+* **Clareza:** A intenção de um record é clara desde o início: representar dados.
+* **Geração automática de métodos:** O compilador gera automaticamente métodos como `equals`, `hashCode` e `toString`, baseados nos campos do record.
+
+**Sintaxe básica de um Record:**
+`{java}record Pessoa(String nome, int idade) {}`
+Essa única linha de código define uma classe `Pessoa` com dois campos: `nome` e `idade`. O compilador gera automaticamente os métodos mencionados anteriormente, garantindo que duas instâncias de `Pessoa` sejam consideradas iguais se seus campos forem iguais.
+
+**Comparação com Classes Tradicionais:**
+
+| Característica | Classes Tradicionais | Records |
+|---|---|---|
+| Objetivo principal | Encapsular dados e comportamento | Armazenar dados imutáveis |
+| Sintaxe | Mais verbosa | Mais concisa |
+| Imuttabilidade | Deve ser explicitamente implementada | É a característica padrão |
+| Métodos automáticos | Precisa implementar manualmente | São gerados automaticamente |
+
+**Quando usar Records?**
+* **Classes de dados:** Para representar dados simples, como pontos, coordenadas, etc.
+* **DTOs (Data Transfer Objects):** Para transportar dados entre camadas de uma aplicação.
+* **Objetos de configuração:** Para armazenar configurações de uma aplicação.
+
+**Exemplo:**
+```java
+record Ponto(int x, int y) {}
+
+public class Main {
+    public static void main(String[] args) {
+        Ponto p1 = new Ponto(2, 3);
+        Ponto p2 = new Ponto(2, 3);
+
+        System.out.println(p1.equals(p2)); // Imprime true
+        System.out.println(p1); // Imprime Ponto[x=2, y=3]
+    }
+}
+```
+
+**Limitações:**
+* **Imutável por padrão:** Se você precisar de um objeto mutável, um record não é a escolha ideal.
+* **Métodos personalizados:** Embora o compilador gere alguns métodos automaticamente, você ainda pode adicionar seus próprios métodos a um record.
+
 ```java
 package com.algaworks.agenda;
 
