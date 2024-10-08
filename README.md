@@ -3,4 +3,5 @@
 ## Cursos:
 
 1. Bootcamp - DIO
-2. Curso Especialista Java - AlgaWorks
+2. Especialista Java - AlgaWorks
+3. Especialista Spring REST - AlgaWorks
