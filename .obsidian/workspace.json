@@ -4,22 +4,23 @@
     "type": "split",
     "children": [
       {
-        "id": "77c63961bdfb0eab",
+        "id": "5bde81cfab94778a",
         "type": "tabs",
         "children": [
           {
-            "id": "e6daa6359e350b11",
+            "id": "2a54dd33324e66c2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clean Code/Padrão de projeto Repository.md",
+                "file": "Frameworks/REST 🍃.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "stacked": true
       }
     ],
     "direction": "vertical"
@@ -69,7 +70,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "6cdad2f90f43499b",
@@ -85,7 +87,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Clean Code/Padrão de projeto Repository.md",
+                "file": "Frameworks/REST 🍃.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +104,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Clean Code/Padrão de projeto Repository.md",
+                "file": "Frameworks/REST 🍃.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +127,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Clean Code/Padrão de projeto Repository.md"
+                "file": "Frameworks/REST 🍃.md"
               }
             }
           },
@@ -137,8 +139,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "horizontal",
@@ -156,10 +157,16 @@
       "command-palette:Abrir paleta de comandos": false
     }
   },
-  "active": "e6daa6359e350b11",
+  "active": "2a54dd33324e66c2",
   "lastOpenFiles": [
-    "Databases/SQL.md",
+    "Frameworks/REST 🍃.md",
+    "Frameworks/Spring 🍃.md",
+    "Databases/JPA e Hibernate.md",
+    "Databases/DDD.md",
+    "imagens/spring-ecosystem.webp",
     "Clean Code/Padrão de projeto Repository.md",
+    "Frameworks",
+    "Databases/SQL.md",
     "Java/Arrays.md",
     "Java/Java Collections/Map.md",
     "Java/Java Collections/Set.md",
@@ -181,8 +188,6 @@
     "Java/Classes Aninhadas.md",
     "Java/Trabalhando com números.md",
     "Java/Trabalhando com strings.md",
-    "Java/API Date, Time e Calendar/Date Time API.md",
-    "Java/API Date, Time e Calendar/Date e Calendar.md",
     "imagens/Pasted image 20240921201043.png",
     "imagens/Pasted image 20240921201033.png",
     "imagens/Pasted image 20240921200959.png",
@@ -191,19 +196,15 @@
     "imagens/partes-da-data.png",
     "imagens/Pasted image 20240919150213.png",
     "Java/API Date, Time e Calendar",
-    "Java/POO/Enums.md",
     "Java/Strings",
-    "Java/POO/Unified Modeling Language.md",
     "imagens/diagrama-enum.png",
     "Java/Enumerações",
     "Java/Generics",
     "imagens/Pasted image 20240912085007.png",
-    "imagens/Pasted image 20240912083228.png",
     "Sem título 1",
     "Java/Gerenciamento de Memória do Java/Sem título",
     "Java/POO/UML/multiplicidade para arrays.dio",
     "Java/POO/UML/construtores.dio",
-    "Java/POO/UML/construtore.dio",
     "Sem título.canvas"
   ]
 }
