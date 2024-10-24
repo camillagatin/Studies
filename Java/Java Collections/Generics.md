@@ -1,3 +1,4 @@
+https://github.com/camillagatin/collections-java-api-2023
 ## O que são Generics?
 Generics, introduzidos no Java 5, são uma ferramenta poderosa para escrever código mais seguro, flexível e reutilizável. Eles permitem que você crie classes e métodos que podem trabalhar com diferentes tipos de dados, sem a necessidade de fazer casting manualmente.
 

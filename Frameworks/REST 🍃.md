@@ -861,3 +861,795 @@ Content-Type: application/json
 Neste exemplo, o cliente envia uma solicitação GET para obter informações sobre o usuário com ID 1. O servidor responde com o código de status 200 OK, indicando que a solicitação foi bem-sucedida, e retorna os dados do usuário em formato JSON.
 
 ---
+## Definindo o Status da Resposta HTTP com @ResponseStatus
+A anotação `@ResponseStatus` é uma ferramenta poderosa em frameworks como Spring para definir explicitamente o código de status HTTP que será retornado em uma resposta. Isso permite um controle mais preciso sobre a comunicação entre o cliente e o servidor, tornando suas APIs RESTful mais informativas e consistentes.
+
+### Como funciona a @ResponseStatus?
+* **Anotação:** É aplicada diretamente em métodos de controladores.
+* **Código de Status:** Define o código de status HTTP que será retornado para a requisição.
+* **Razão:** Opcionalmente, pode incluir uma razão para o status.
+
+### Exemplo Prático (Spring Boot):
+```java
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public User createUser(@RequestBody User user) {
+        // Lógica para criar o usuário
+        return userService.createUser(user);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Long id) {
+        // Lógica para deletar o usuário
+        userService.deleteUser(id);
+    }
+}
+```
+
+* **@PostMapping:** Indica que o método é mapeado para requisições POST.
+* **@ResponseStatus(HttpStatus.CREATED):** Define que o status da resposta será 201 Created, indicando que um novo recurso foi criado.
+* **@DeleteMapping:** Indica que o método é mapeado para requisições DELETE.
+* **@ResponseStatus(HttpStatus.NO_CONTENT):** Define que o status da resposta será 204 No Content, indicando que a requisição foi bem-sucedida, mas não há conteúdo a ser retornado.
+
+### Benefícios do Uso de @ResponseStatus:
+* **Clareza:** Torna explícito o código de status que será retornado, melhorando a legibilidade do código.
+* **Consistência:** Garante que o código de status esteja alinhado com a operação realizada.
+* **Facilidade de manutenção:** Centraliza a definição do código de status em um único lugar.
+* **Personalização:** Permite definir razões personalizadas para os códigos de status.
+
+### Opções de Personalização:
+* **HttpStatus:** Enum que contém os códigos de status HTTP padrão.
+* **Código de Status Personalizado:** Você pode criar seus próprios códigos de status personalizados, mas é recomendado utilizar os códigos padrão sempre que possível.
+* **Razão:** A propriedade `reason` permite definir uma razão personalizada para o código de status.
+
+### Considerações Adicionais:
+* **ResponseEntity:** Para um controle mais fino sobre a resposta, você pode utilizar o `ResponseEntity`. Ele permite definir o código de status, cabeçalhos e corpo da resposta de forma mais granular.
+* **Exceções:** Em caso de erros, você pode personalizar o tratamento de exceções para retornar códigos de status específicos.
+* **Global Exception Handling:** Para um tratamento global de exceções e definição de códigos de status, você pode utilizar `@ControllerAdvice`.
+---
+## Manipulando Respostas HTTP com ResponseEntity
+**Sim, com certeza!** O `ResponseEntity` no Spring é uma classe poderosa que oferece um controle granular sobre as respostas HTTP que sua aplicação retorna. Ele permite definir o corpo da resposta, o código de status HTTP, os cabeçalhos e muito mais.
+
+**Por que usar ResponseEntity?**
+* **Flexibilidade:** Permite personalizar completamente a resposta, além de apenas o corpo da mensagem.
+* **Controle sobre o status:** Você define explicitamente o código de status HTTP a ser retornado, como 200 OK, 404 Not Found, etc.
+* **Gerenciamento de cabeçalhos:** Adiciona cabeçalhos personalizados à resposta, como cabeçalhos de cache ou de autenticação.
+* **Tratamento de erros:** Retorna respostas com códigos de status de erro e mensagens personalizadas para indicar problemas.
+
+**Exemplo prático:**
+```java
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(user);
+    }
+}
+```
+**Explicando o código:**
+* **@GetMapping:** Mapeia a requisição HTTP GET para o método.
+* **ResponseEntity`<User>`:** Indica que o método retornará um objeto `ResponseEntity` com um corpo do tipo `User`.
+* **ResponseEntity.notFound().build():** Se o usuário não for encontrado, retorna um `ResponseEntity` com o status 404 Not Found.
+* **ResponseEntity.ok(user):** Se o usuário for encontrado, retorna um `ResponseEntity` com o status 200 OK e o objeto `User` no corpo.
+
+**Outras funcionalidades do ResponseEntity:**
+* **headers():** Adiciona cabeçalhos personalizados à resposta.
+* **statusCode():** Define o código de status HTTP da resposta.
+* **body():** Define o corpo da resposta.
+* **build():** Cria um objeto `ResponseEntity` imutável com as configurações definidas.
+
+**Exemplo com cabeçalhos personalizados e status:**
+```java
+@GetMapping("/data")
+public ResponseEntity<String> getData() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.set("Cache-Control", "no-cache");
+
+    return ResponseEntity.status(HttpStatus.OK)
+            .headers(headers)
+            .body("{\"data\": \"Algum dado\"}");
+}
+```
+
+**Quando usar ResponseEntity:**
+* Quando você precisa de um controle fino sobre a resposta.
+* Quando você precisa retornar códigos de status HTTP personalizados.
+* Quando você precisa adicionar cabeçalhos personalizados à resposta.
+* Quando você precisa retornar diferentes tipos de conteúdo.
+---
+## Corrigindo o Status HTTP para Recurso Inexistente
+Quando um cliente solicita um recurso que não existe em seu servidor, o código de status HTTP mais adequado a ser retornado é o **404 Not Found**. Esse código indica claramente ao cliente que o recurso solicitado não foi encontrado.
+
+**Por que é importante usar o código de status correto?**
+* **Clareza:** Informa ao cliente de forma precisa o motivo da falha.
+* **Otimização:** Permite que o cliente tome as ações apropriadas, como exibir uma mensagem de erro personalizada ou tentar uma nova busca.
+* **SEO:** Contribui para um melhor indexamento do seu site pelos mecanismos de busca.
+
+**Como corrigir o status HTTP para recurso inexistente usando ResponseEntity:**
+```java
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(user);
+    }
+}
+```
+
+**Explicação:**
+* **ResponseEntity.notFound().build():** Essa linha é crucial. Quando o usuário não é encontrado (ou seja, `user` é nulo), o método `notFound()` cria um `ResponseEntity` com o status 404 Not Found. O método `build()` finaliza a construção da resposta.
+
+**Outros exemplos de códigos de status:**
+* **200 OK:** A requisição foi bem-sucedida.
+* **204 No Content:** A requisição foi bem-sucedida, mas não há conteúdo a ser retornado (útil para operações DELETE).
+* **401 Unauthorized:** A autenticação é necessária.
+* **403 Forbidden:** O cliente não tem permissão para acessar o recurso.
+* **500 Internal Server Error:** Ocorreu um erro no servidor.
+
+**Personalizando a resposta 404:**
+Você pode personalizar a resposta 404 para fornecer mais informações ao cliente:
+
+```java
+return ResponseEntity.notFound()
+        .body("Usuário com ID " + id + " não encontrado.");
+```
+
+**Boas práticas:**
+* **Seja específico:** Ao retornar um 404, tente fornecer informações específicas sobre o recurso que não foi encontrado.
+* **Considere erros 400:** Se o problema estiver relacionado a uma solicitação mal formatada (por exemplo, um ID inválido), considere retornar um 400 Bad Request.
+* **Utilize mensagens de erro claras:** As mensagens de erro devem ser concisas e informativas, ajudando o cliente a entender o problema.
+* **Centralize o tratamento de erros:** Crie um `ExceptionHandler` para lidar com exceções e retornar os códigos de status HTTP apropriados.
+---
+Quando uma coleção de recursos está vazia, o código de status HTTP recomendado a ser retornado é **200 OK** com um corpo de resposta vazio.
+
+Aqui está uma explicação detalhada:
+
+**Por que 200 OK?**
+
+* **Sucesso:** O servidor processou a solicitação com sucesso.
+* **Nenhum erro:** Não houve nenhum problema na execução da operação.
+* **Resultado esperado:** Uma coleção vazia é um resultado válido e esperado em muitas situações.
+
+**Exemplo:**
+
+```java
+@GetMapping("/users")
+public ResponseEntity<List<User>> getUsers() {
+    List<User> users = userService.getAllUsers();
+
+    if (users.isEmpty()) {
+        return ResponseEntity.ok().build();
+    }
+
+    return ResponseEntity.ok(users);
+}
+```
+
+**Explicação:**
+
+* **ResponseEntity.ok().build():** Cria um `ResponseEntity` com o status 200 OK e um corpo de resposta vazio.
+
+**Alternativas:**
+
+Embora 200 OK seja a opção mais comum e recomendada, em alguns casos, você pode considerar usar:
+
+* **204 No Content:** Se você não deseja retornar nenhum conteúdo, mesmo que a coleção esteja vazia. Isso pode ser útil quando o objetivo principal é verificar a existência da coleção.
+* **206 Partial Content:** Se você estiver implementando paginação e a coleção vazia representa o final da lista.
+---
+
+## Modelando e Implementando a Inclusão de Recursos com POST
+
+**Entendendo o Método POST**
+O método HTTP POST é utilizado para criar novos recursos em um servidor. Ele é ideal para operações que envolvem a criação de dados, como:
+
+* **Cadastro de usuários:** Ao enviar um formulário de cadastro, os dados são enviados para o servidor via POST para criar um novo usuário.
+* **Criação de posts em um blog:** Ao escrever um novo post, o conteúdo é enviado via POST para criar um novo registro no banco de dados.
+* **Envio de arquivos:** Ao fazer o upload de um arquivo, os dados do arquivo são enviados via POST para o servidor.
+
+**Modelando a Requisição**
+Para modelar uma requisição POST, você precisa definir:
+* **URI:** O endpoint da API que receberá a requisição.
+* **Corpo da requisição:** Os dados que serão enviados para criar o novo recurso. Geralmente, o corpo é formatado em JSON ou XML.
+* **Cabeçalhos:** Informações adicionais sobre a requisição, como o tipo de conteúdo (Content-Type).
+
+**Exemplo em JSON:**
+```json
+{
+    "nome": "João da Silva",
+    "email": "joao@example.com",
+    "idade": 30
+}
+```
+
+**Implementando o Controlador (Spring MVC como exemplo):**
+```java
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+
+    @PostMapping
+    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
+        Usuario usuarioSalvo = usuarioService.salvar(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
+    }
+}
+```
+
+**Explicando o código:**
+* **@RestController:** Indica que a classe é um controlador REST.
+* **@RequestMapping("/usuarios"):** Define a URL base para as rotas.
+* **@PostMapping:** Mapeia o método para requisições POST.
+* **@RequestBody:** Converte o corpo da requisição JSON em um objeto `Usuario`.
+* **ResponseEntity:** Permite personalizar a resposta, incluindo o status HTTP e o corpo.
+* **HttpStatus.CREATED:** Indica que um novo recurso foi criado com sucesso.
+
+**Considerações importantes:**
+* **Validação:** É fundamental validar os dados recebidos na requisição para garantir a integridade dos dados.
+* **Segurança:** Proteja sua API contra ataques como injection e cross-site scripting.
+* **Idempotência:** Se possível, faça com que a operação POST seja idempotente, ou seja, que possa ser chamada múltiplas vezes com o mesmo resultado.
+* **Tratamento de erros:** Implemente um mecanismo para tratar erros e retornar mensagens de erro informativas.
+
+**Exemplo com validação:**
+```java
+@PostMapping
+@Valid
+public ResponseEntity<Usuario> criarUsuario(@RequestBody @Valid Usuario usuario) {
+    // ...
+}
+```
+
+**Outras opções:**
+* **Formatos de dados:** Além do JSON, você pode usar XML ou outros formatos.
+* **Bibliotecas:** Utilize bibliotecas como Jackson para serializar e desserializar objetos JSON.
+* **Testes:** Crie testes unitários para garantir o funcionamento correto do seu controlador.
+---
+## Negociando o Media Type do Payload do POST com Content-Type
+O cabeçalho `Content-Type` é utilizado para especificar o tipo de conteúdo (media type) dos dados enviados no corpo da requisição HTTP. Quando você envia uma requisição POST, o servidor pode usar esse cabeçalho para determinar o formato dos dados e como processá-los.
+
+### Configurando o Content-Type no Cliente
+Para indicar o tipo de conteúdo da sua requisição POST, você deve incluir o cabeçalho `Content-Type` com o valor apropriado. Por exemplo, para enviar dados em formato JSON:
+```
+Content-Type: application/json
+```
+
+**Exemplo em Java (Spring Boot):**
+```java
+@PostMapping
+public ResponseEntity<User> createUser(@RequestBody User user) {
+    // ...
+}
+```
+
+O `@RequestBody` anotação automaticamente converte o corpo da requisição JSON em um objeto `User`, desde que o `Content-Type` seja definido como `application/json`.
+
+### Processando o Payload no Servidor
+No lado do servidor, você pode acessar o valor do cabeçalho `Content-Type` para determinar o formato dos dados e processá-los adequadamente.
+
+**Exemplo em Java (Spring Boot):**
+```java
+@PostMapping
+public ResponseEntity<User> createUser(@RequestBody User user, HttpServletRequest request) {
+    String contentType = request.getContentType();
+
+    if (contentType.equals(MediaType.APPLICATION_JSON_VALUE)) {
+        // Processar dados JSON
+    } else if (contentType.equals(MediaType.APPLICATION_XML_VALUE)) {
+        // Processar dados XML
+    } else {
+        // Tratar outros tipos de conteúdo ou retornar um erro
+    }
+}
+```
+
+### Negociação de Conteúdo
+Se você deseja permitir que o cliente escolha o tipo de conteúdo a ser enviado, você pode usar o cabeçalho `Accept` na resposta para indicar os tipos de conteúdo que o servidor suporta. O cliente pode então enviar o cabeçalho `Content-Type` com um dos tipos suportados.
+
+**Exemplo:**
+```
+HTTP/1.1 POST /users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+**Resposta do servidor:**
+```
+HTTP/1.1 201 Created
+Content-Type: application/json
+```
+
+### Considerações Importantes
+* **Formatos suportados:** Certifique-se de que seu servidor suporta os formatos de conteúdo que você deseja permitir.
+* **Validação:** Valide os dados recebidos para garantir que eles estejam no formato correto e atendam aos requisitos da sua aplicação.
+* **Tratamento de erros:** Implemente um mecanismo para lidar com erros de validação ou de processamento dos dados.
+* **Segurança:** Proteja sua API contra ataques como injection e cross-site scripting.
+---
+## Modelando e Implementando a Atualização de Recursos com PUT
+O método HTTP **PUT** é utilizado para atualizar um recurso existente em um servidor. Ao contrário do POST, que cria um novo recurso, o PUT substitui completamente o recurso existente com os dados fornecidos na requisição.
+
+### Modelando a Requisição
+* **URI:** O endpoint da API que representa o recurso a ser atualizado. Geralmente, inclui um identificador único do recurso.
+* **Corpo da requisição:** Os dados atualizados do recurso, no formato especificado no cabeçalho `Content-Type`.
+* **Cabeçalho Content-Type:** Indica o tipo de conteúdo dos dados no corpo da requisição (por exemplo, `application/json`).
+
+**Exemplo em JSON:**
+```json
+PUT /usuarios/1
+Content-Type: application/json
+
+{
+    "nome": "João da Silva Atualizado",
+    "email": "joao@example.com",
+    "idade": 32
+}
+```
+
+### Implementando o Controlador (Spring MVC como exemplo):
+```java
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+        Usuario usuarioExistente = usuarioService.buscarPorId(id);
+        if (usuarioExistente == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        usuarioExistente.setNome(usuario.getNome());
+        usuarioExistente.setEmail(usuario.getEmail());
+        usuarioExistente.setIdade(usuario.getIdade());
+
+        Usuario usuarioAtualizado = usuarioService.salvar(usuarioExistente);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
+}
+```
+**Explicando o código:**
+* **@PutMapping:** Mapeia o método para requisições PUT.
+* **@PathVariable:** Extrai o ID do usuário da URL.
+* **@RequestBody:** Converte o corpo da requisição JSON em um objeto `Usuario`.
+* **ResponseEntity:** Permite personalizar a resposta, incluindo o status HTTP e o corpo.
+
+### Considerações Importantes:
+* **Idempotência:** O método PUT deve ser idempotente, ou seja, o efeito de múltiplas chamadas com os mesmos dados deve ser o mesmo que uma única chamada.
+* **Validação:** Valide os dados recebidos para garantir que sejam válidos e consistentes.
+* **Atualização parcial:** Se você quiser permitir a atualização parcial de um recurso, considere usar o método PATCH.
+* **Concorrência:** Se múltiplas requisições PUT forem feitas simultaneamente para o mesmo recurso, implemente um mecanismo de concorrência para evitar conflitos.
+
+### Comparando PUT e PATCH:
+* **PUT:** Substitui completamente o recurso existente com os dados fornecidos.
+* **PATCH:** Permite atualizar apenas partes específicas do recurso.
+
+**Quando usar PUT:**
+* Quando você deseja substituir completamente um recurso com novos dados.
+* Quando a representação enviada no corpo da requisição é uma representação completa do estado desejado do recurso.
+
+**Quando usar PATCH:**
+* Quando você deseja atualizar apenas algumas propriedades de um recurso.
+* Quando você deseja aplicar uma série de operações (adicionar, remover, substituir) em um recurso.
+---
+## Modelando e Implementando a Exclusão de Recursos com DELETE
+O método HTTP **DELETE** é utilizado para excluir um recurso existente em um servidor. É uma operação idempotente, ou seja, pode ser chamada múltiplas vezes com o mesmo resultado sem causar efeitos colaterais indesejados.
+
+### Modelando a Requisição
+* **URI:** O endpoint da API que representa o recurso a ser excluído. Geralmente, inclui um identificador único do recurso.
+* **Corpo da requisição:** Normalmente, o corpo da requisição para um DELETE é vazio. No entanto, alguns servidores podem aceitar um corpo para fornecer informações adicionais sobre a exclusão.
+
+**Exemplo:**
+`DELETE /usuarios/1`
+
+### Implementando o Controlador:
+```java
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirUsuario(@PathVariable Long id) {
+        Usuario usuario = usuarioService.buscarPorId(id);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        usuarioService.excluir(usuario);
+        return ResponseEntity.noContent().build();
+    }
+}
+```
+**Explicando o código:**
+* **@DeleteMapping:** Mapeia o método para requisições DELETE.
+* **@PathVariable:** Extrai o ID do usuário da URL.
+* **ResponseEntity`<Void>`:** Indica que a resposta não tem corpo.
+* **HttpStatus.NO_CONTENT:** Indica que a requisição foi bem-sucedida e não há conteúdo a ser retornado.
+
+### Considerações Importantes:
+* **Cascateamento:** Se o recurso a ser excluído tiver dependências com outros recursos, é importante definir uma estratégia de cascateamento (por exemplo, excluir os recursos dependentes ou gerar um erro).
+* **Soft delete:** Em alguns casos, pode ser mais adequado marcar um recurso como excluído em vez de deletá-lo fisicamente do banco de dados. Isso permite recuperar o recurso posteriormente se necessário.
+* **Logs:** Registre as operações de exclusão para fins de auditoria e diagnóstico.
+* **Segurança:** Implemente mecanismos de autenticação e autorização para garantir que apenas usuários autorizados possam excluir recursos.
+
+### Boas Práticas:
+* **Confirmação:** Considere adicionar um passo de confirmação antes de excluir um recurso, especialmente para recursos importantes.
+* **Recuperação:** Implemente um mecanismo para recuperar recursos excluídos acidentalmente, como uma lixeira ou um sistema de versionamento.
+* **Testes:** Crie testes unitários para garantir que a exclusão de recursos funcione corretamente.
+
+### Comparando DELETE com outros métodos HTTP:
+* **DELETE:** Exclui um recurso existente.
+* **POST:** Cria um novo recurso.
+* **PUT:** Atualiza completamente um recurso existente.
+* **PATCH:** Atualiza parcialmente um recurso existente.
+---
+## Implementando a Camada de Domain Services e a Importância da Linguagem Ubíqua
+
+### O que são Domain Services?
+Em Domain-Driven Design ([[DDD]]), **Domain Services** são classes que encapsulam a lógica de negócio complexa que não se encaixa naturalmente em entidades ou valor objects. Eles representam operações que envolvem múltiplos objetos ou ações que não estão diretamente ligadas à identidade de um objeto.
+
+**Quando usar Domain Services:**
+* **Operações complexas:** Quando uma operação envolve múltiplos objetos ou regras de negócio complexas.
+* **Lógica transversal:** Quando a lógica é compartilhada por várias entidades ou valor objects.
+* **Operações atômicas:** Quando uma operação precisa ser realizada como uma transação atômica.
+
+### A Importância da Linguagem Ubíqua
+A **Linguagem Ubíqua** é um conceito fundamental em DDD que visa alinhar a linguagem dos desenvolvedores com a linguagem do domínio do negócio. Ao utilizar a mesma terminologia em todo o projeto, desde a modelagem do domínio até o código, facilita a comunicação entre as equipes e garante que o software represente de forma precisa o negócio.
+
+**Beneficios da Linguagem Ubíqua:**
+* **Melhora a comunicação:** Facilita a comunicação entre desenvolvedores, analistas de negócio e stakeholders.
+* **Aumenta a compreensão do código:** Torna o código mais legível e fácil de entender.
+* **Reduz o risco de erros:** Minimiza a chance de interpretações equivocadas dos requisitos.
+* **Aumenta a agilidade:** Permite que o time responda mais rapidamente às mudanças nos requisitos.
+
+### Implementando Domain Services
+**Entendendo o Exemplo**
+Imaginemos um sistema de e-commerce onde queremos implementar a lógica de criação de um pedido.
+
+**1. Configuração do Projeto:**
+* **Criar um novo projeto Spring Boot:** Utilize o Spring Initializr para criar um novo projeto com as dependências necessárias (Spring Web, Lombok, MediatR, etc.).
+* **Configurar o MediatR:** Adicione as dependências do MediatR ao seu projeto e configure a injeção de dependências.
+
+**2. Modelando o Domínio:**
+```java
+@Data
+@Entity
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> items;
+
+    // ... outros atributos
+}
+
+@Data
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private BigDecimal price;
+    // ... outros atributos
+}
+```
+
+**3. Criando o Command:**
+```java
+public record CreateOrderCommand(List<Long> productIds) {
+}
+```
+
+**4. Implementando o Domain Service:**
+```java
+@Service
+public class OrderService {
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Transactional
+    public Order createOrder(CreateOrderCommand command) {
+        // Verificar se os produtos estão em estoque
+        List<Product> products = productRepository.findAllById(command.productIds());
+
+        // Criar o pedido
+        Order order = new Order();
+        // ... adicionar itens ao pedido
+
+        orderRepository.save(order);
+        return order;
+    }
+}
+```
+
+**5. Criando o Handler:**
+```java
+@Service
+public class CreateOrderCommandHandler implements IRequestHandler<CreateOrderCommand, Order> {
+    @Autowired
+    private OrderService orderService;
+
+    @Override
+    public Order handle(CreateOrderCommand request, CancellationToken cancellationToken) {
+        return orderService.createOrder(request);
+    }
+}
+```
+
+**6. Controlador REST:**
+```java
+@RestController
+@RequestMapping("/orders")
+public class OrderController {
+    @Autowired
+    private IMediator mediator;
+
+    @PostMapping
+    public ResponseEntity<Order> createOrder(@RequestBody CreateOrderCommand command) {
+        Order order = mediator.Send(command).GetAwaiter().GetResult();
+        return ResponseEntity.ok(order);
+    }
+}
+```
+**Explicação:**
+* **MediatR:** A biblioteca MediatR é utilizada para centralizar a orquestração das requisições.
+* **CreateOrderCommand:** Representa a intenção de criar um pedido.
+* **OrderService:** Encapsula a lógica de negócio complexa, como a verificação de estoque e a criação do pedido.
+* **CreateOrderCommandHandler:** Mapeia o comando para o serviço correspondente.
+* **Controlador REST:** Executa o comando através do mediator e retorna a resposta.
+
+
+**Pontos importantes:**
+* **Transações:** Utilize transações para garantir a consistência dos dados.
+* **Validação:** Valide os dados de entrada para evitar erros.
+* **Exceções:** Lance exceções personalizadas para indicar erros específicos.
+* **Logs:** Registre as operações para facilitar a depuração e a auditoria.
+
+**Adaptando para outros cenários:**
+Este exemplo pode ser adaptado para diversos outros cenários, como:
+* **Atualização de pedidos:** Criar um comando `UpdateOrderCommand`.
+* **Cancelamento de pedidos:** Criar um comando `CancelOrderCommand`.
+* **Cálculo de descontos:** Criar um Domain Service específico para calcular descontos.
+### Boas Práticas
+* **Linguagem Ubíqua:** Utilize termos do domínio do negócio em todos os componentes do sistema.
+* **Coesão:** Cada Domain Service deve ter uma responsabilidade única e bem definida.
+* **Limpeza:** Mantenha os Domain Services livres de lógica de infraestrutura (ex: acesso ao banco de dados).
+* **Testes:** Escreva testes unitários para garantir a corretude dos Domain Services.
+* **Injeção de dependências:** Utilize um framework de injeção de dependências para gerenciar as dependências dos Domain Services.
+
+### Benefícios dos Domain Services
+* **Código mais limpo e organizado:** Separa a lógica de negócio da infraestrutura.
+* **Facilita a manutenção:** Torna o código mais fácil de entender e modificar.
+* **Aumenta a testabilidade:** Permite testar a lógica de negócio de forma isolada.
+* **Promove a reutilização de código:** A lógica de negócio complexa pode ser encapsulada em Domain Services e reutilizada em diferentes partes do sistema.
+---
+## Refatorando a Exclusão de Cozinhas para Usar Domain Services
+
+**Entendendo o Problema**
+A exclusão de cozinhas em um sistema, seja ele um sistema de gestão de restaurantes ou uma plataforma de delivery, envolve mais do que simplesmente remover um registro do banco de dados. Pode haver regras de negócio complexas, como:
+
+* Verificar se a cozinha possui pedidos pendentes.
+* Inativar a cozinha ao invés de deletá-la fisicamente.
+* Notificar outros sistemas sobre a exclusão.
+
+**Por que Usar Domain Services?**
+
+Domain Services são ideais para encapsular essa lógica de negócio complexa, tornando o código mais limpo, testável e manutenível. Ao centralizar a lógica de exclusão em um Domain Service, você evita a dispersão dessa lógica por diferentes camadas da aplicação.
+
+**Exemplo:**
+
+**1. Modelando o Domínio:**
+```java
+@Entity
+public class Kitchen {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // ... outros atributos
+}
+```
+
+**2. Criando o Command:**
+```java
+public record DeleteKitchenCommand(Long kitchenId) {
+}
+```
+
+**3. Implementando o Domain Service:**
+```java
+@Service
+public class KitchenService {
+    @Autowired
+    private KitchenRepository kitchenRepository;
+    @Autowired
+    private OrderService orderService;
+
+    @Transactional
+    public void deleteKitchen(DeleteKitchenCommand command) {
+        Kitchen kitchen = kitchenRepository.findById(command.kitchenId())
+                .orElseThrow(() -> new EntityNotFoundException("Cozinha não encontrada"));
+
+        // Verificar se a cozinha possui pedidos pendentes
+        if (orderService.hasPendingOrders(kitchen)) {
+            throw new BusinessException("Não é possível excluir uma cozinha com pedidos pendentes");
+        }
+
+        // Inativar a cozinha ao invés de deletá-la
+        kitchen.setActive(false);
+        kitchenRepository.save(kitchen);
+
+        // Notificar outros sistemas
+        // ...
+    }
+}
+```
+
+**4. Implementando o Handler:**
+```java
+@Service
+public class DeleteKitchenCommandHandler implements IRequestHandler<DeleteKitchenCommand> {
+    @Autowired
+    private KitchenService kitchenService;
+
+    @Override
+    public void handle(DeleteKitchenCommand request, CancellationToken cancellationToken) {
+        kitchenService.deleteKitchen(request);
+    }
+}
+```
+
+**5. Controlador REST:**
+```java
+@RestController
+@RequestMapping("/kitchens")
+public class KitchenController {
+    @Autowired
+    private IMediator mediator;
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteKitchen(@PathVariable Long id) {
+        mediator.Send(new DeleteKitchenCommand(id)).GetAwaiter().GetResult();
+        return ResponseEntity.noContent().build();
+    }
+}
+```
+**Explicação:**
+* **Domain Service:** Encapsula a lógica de exclusão da cozinha, incluindo verificações, atualizações e notificações.
+* **Command:** Representa a intenção de excluir uma cozinha.
+* **Handler:** Mapeia o comando para o serviço correspondente.
+* **Controlador:** Executa o comando através do mediator.
+
+**Benefícios da Refatoração:**
+* **Coesão:** A lógica de exclusão está centralizada em um único lugar.
+* **Testes:** É mais fácil testar a lógica de negócio de forma isolada.
+* **Reutilização:** A lógica pode ser reutilizada em outros contextos.
+* **Manutenibilidade:** Facilita a compreensão e a manutenção do código.
+* **Extensibilidade:** É mais fácil adicionar novas regras de negócio.
+
+**Considerações Adicionais:**
+* **Soft delete:** Ao invés de excluir fisicamente a cozinha, pode ser interessante marcar como inativa para permitir a recuperação futura.
+* **Eventos:** Utilize eventos para notificar outros sistemas sobre a exclusão da cozinha.
+* **Transações:** Garanta a consistência dos dados utilizando transações.
+* **Logs:** Registre as operações para fins de auditoria e diagnóstico.
+
+**Adaptando para outros cenários:**
+Este exemplo pode ser adaptado para outros cenários, como:
+* **Exclusão de produtos:** Verificar se o produto está associado a algum pedido.
+* **Exclusão de usuários:** Verificar se o usuário possui permissões especiais.
+---
+## Analisando a Solução para Atualização Parcial de Recursos com PATCH
+
+**Entendendo o PATCH**
+O método HTTP PATCH é ideal para realizar atualizações parciais em recursos, ou seja, modificar apenas os campos específicos de um objeto sem precisar reenviar todo o objeto. Isso é particularmente útil em cenários onde os objetos são grandes ou complexos, e apenas algumas propriedades precisam ser alteradas.
+
+**Implementando o PATCH:**
+**1. DTO para representação parcial:**
+```java
+@Data
+public class RestauranteUpdateDTO {
+    private String nome;
+    private String endereco;
+    // ... outros atributos
+}
+```
+
+**2. Serviço para atualizar o recurso:**
+```java
+@Service
+public class RestauranteService {
+    @Autowired
+    private RestauranteRepository restauranteRepository;
+
+    @Transactional
+    public Restaurante atualizarRestaurante(Long id, RestauranteUpdateDTO restauranteUpdateDTO) {
+        Restaurante restaurante = restauranteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Restaurante não encontrado"));
+
+        // Copiar os valores não nulos do DTO para a entidade
+        if (restauranteUpdateDTO.getNome() != null) {
+            restaurante.setNome(restauranteUpdateDTO.getNome());
+        }
+        // ...
+
+        return restauranteRepository.save(restaurante);
+    }
+}
+```
+
+**3. Controlador REST:**
+```java
+@RestController
+@RequestMapping("/restaurantes")
+public class RestauranteController {
+    @Autowired
+    private RestauranteService restauranteService;
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Restaurante> atualizarRestauranteParcialmente(@PathVariable Long id,
+                                                                         @RequestBody RestauranteUpdateDTO restauranteUpdateDTO) {
+        Restaurante restauranteAtualizado = restauranteService.atualizarRestaurante(id, restauranteUpdateDTO);
+        return ResponseEntity.ok(restauranteAtualizado);
+    }
+}
+```
+**Análise da Solução:**
+* **Flexibilidade:** Permite atualizar apenas os campos necessários, evitando sobrescrever dados não intencionalmente.
+* **Eficiência:** Reduz a quantidade de dados transmitidos na requisição.
+* **Claridade:** A lógica de atualização é clara e concisa.
+* **Validação:** É importante adicionar validação para garantir que os dados enviados sejam válidos e consistentes.
+
+**Considerações Adicionais:**
+* **Padrões de Projeto:**
+  * **Builder:** Para construir objetos de forma imutável e garantir a consistência dos dados.
+  * **Patch:** Utilizar bibliotecas que implementam o padrão PATCH para facilitar a aplicação de atualizações parciais.
+* **Performance:**
+  * **Lazy loading:** Utilizar lazy loading para evitar carregar dados desnecessários.
+  * **Índices:** Criar índices nos campos que são frequentemente pesquisados.
+* **Segurança:**
+  * **Autorização:** Garantir que apenas usuários autorizados possam realizar atualizações.
+  * **Validação de entrada:** Validar todos os dados de entrada para evitar ataques de injeção.
+
+**Exemplo com JSON Patch:**
+
+```json
+[
+  { "op": "replace", "path": "/nome", "value": "Novo Nome" },
+  { "op": "add", "path": "/tags", "value": ["novo", "tag"] }
+]
+```
+
+**Bibliotecas que facilitam o uso de JSON Patch:**
+* **Jackson:** Permite personalizar o processo de serialização e desserialização de JSON.
+* **Spring Data REST:** Fornece suporte nativo para JSON Patch.
+---

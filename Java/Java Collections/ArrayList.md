@@ -1,3 +1,4 @@
+https://github.com/camillagatin/collections-java-api-2023
 `{java icon} import java.util.ArrayList;`
 `{java icon}ArrayList<Fruta> frutas = new ArrayList<>();`
 

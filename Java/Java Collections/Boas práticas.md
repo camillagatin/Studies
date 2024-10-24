@@ -1,3 +1,4 @@
+https://github.com/camillagatin/collections-java-api-2023
 # Encapsulamento com coleções não-modificáveis
 O encapsulamento é um dos pilares da programação orientada a objetos, e quando falamos de coleções em Java, ele se torna ainda mais importante. Uma das melhores práticas para garantir a integridade e segurança de suas coleções é utilizar **coleções não-modificáveis**.
 

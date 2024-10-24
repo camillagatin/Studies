@@ -1,6 +1,6 @@
 {
   "showLineNumber": false,
-  "spellcheck": false,
+  "spellcheck": true,
   "propertiesInDocument": "source",
   "autoConvertHtml": false,
   "foldHeading": false,
