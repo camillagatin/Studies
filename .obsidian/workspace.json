@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "9dd0b1edac7064dc",
+        "id": "cf49179b2c2e445a",
         "type": "tabs",
         "children": [
           {
-            "id": "05a4f47567d94c6d",
+            "id": "e9825782aead2b33",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Frameworks/Spring 🍃.md",
+                "file": "Java/Sintaxe Java/Terminal e Argumentos.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Spring 🍃"
+              "title": "Terminal e Argumentos"
             }
           }
         ]
@@ -91,8 +91,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "6cdad2f90f43499b",
@@ -183,28 +182,33 @@
       "graph:Abrir visualização em gráfico": true,
       "canvas:Criar novo canvas": true,
       "daily-notes:Abrir a nota de hoje": true,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "templates:Inserir modelo": false,
       "command-palette:Abrir paleta de comandos": false
     }
   },
-  "active": "05a4f47567d94c6d",
+  "active": "e9825782aead2b33",
   "lastOpenFiles": [
-    "Frameworks/Criando um projeto do zero.md",
-    "Frameworks/Spring Boot.md",
-    "Frameworks/REST 🍃.md",
-    "Frameworks/Spring 🍃.md",
+    "README.md",
+    "Frameworks/Spring REST/Pool de Conexões e Flyway.md",
+    "Frameworks/Spring REST/Criando um projeto do zero.md",
+    "Frameworks/Spring REST/JPA e Hibernate.md",
+    "Frameworks/Spring REST/Spring 🍃.md",
+    "Frameworks/Spring REST",
+    "Java/Fundamentos da Linguagem/Serialização de objetos.md",
+    "Frameworks/Spring REST/Spring Data JPA.md",
+    "imagens/0_wUPOmDw46jJDRaZM.webp",
+    "imagens/Pasted image 20241029090640.png",
+    "Frameworks/Spring REST/REST 🍃.md",
+    "imagens/Pasted image 20241028101205.png",
+    "imagens/Pasted image 20241028101147.png",
+    "imagens/Pasted image 20241028101020.png",
+    "Frameworks/Spring REST/Spring Boot.md",
     "imagens/Pasted image 20241022085921.png",
     "imagens/Pasted image 20241022085238.png",
     "imagens/Pasted image 20241022082354.png",
     "imagens/Pasted image 20241022082314.png",
     "imagens/Pasted image 20241022081135.png",
-    "imagens/Pasted image 20241021181308.png",
-    "imagens/Pasted image 20241021172605.png",
     "Java/Sintaxe Java/Documentação.md",
-    "imagens/Pasted image 20241021171201.png",
-    "imagens/Pasted image 20241021171020.png",
-    "imagens/Pasted image 20241021170907.png",
     "Frameworks/().md",
     "Java/Streams API/Expressões Lamba e Method Reference.md",
     "Java/Streams API/Streams API.md",
@@ -223,19 +227,13 @@
     "Java/Arrays.md",
     "Java/POO/Pilares da POO/Herança.md",
     "Java/Decorator Pattern.md",
-    "Java/Fundamentos da Linguagem/Estruturas Excepcionais.md",
-    "Java/Boas Práticas.md",
-    "Java/Sintaxe Java/Anatomia das Classes.md",
-    "Java/Java Logging API, Logback e SLF4J.md",
     "Databases",
-    "Java/Serialização de objetos.md",
     "Java/API Date, Time e Calendar",
     "Java/Strings",
     "Java/Enumerações",
     "Java/Generics",
     "Sem título 1",
     "Java/Gerenciamento de Memória do Java/Sem título",
-    "Java/POO/UML/multiplicidade para arrays.dio",
     "Sem título.canvas"
   ]
 }

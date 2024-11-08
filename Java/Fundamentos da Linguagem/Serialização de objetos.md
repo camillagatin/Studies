@@ -227,7 +227,7 @@ public class DesserializacaoExemplo {
 * **Exceções:** O método `readObject` pode lançar `IOException` se ocorrer um erro de E/S ou `ClassNotFoundException` se a classe do objeto serializado não for encontrada.
 * **Fechando Fluxos:** Sempre feche o `ObjectInputStream` e o `FileInputStream` após o uso para liberar recursos.
 ---
-## Ignorando Propriedades com o Modificador transient na Serialização
+## Ignorando Propriedades com o Modificador transient
 O modificador `transient` em Java é utilizado para indicar que um atributo de uma classe **não deve ser serializado**. Isso significa que quando um objeto é convertido em um fluxo de bytes (serializado), o valor desse atributo não será incluído.
 
 **Por que usar transient?**

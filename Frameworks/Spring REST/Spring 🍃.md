@@ -1523,835 +1523,242 @@ A prioridade dos métodos de ativação é a seguinte:
 * **Ativando o perfil "dev" usando Maven:**
   `{bash}mvn spring-boot:run -DactivatedProperties=dev`
 ---
-## Usando Queries JPQL Customizadas com @Query
+## Introdução ao Modelo de Maturidade de Richardson (RMM)
 
-**O que é JPQL?**
-JPQL (Java Persistence Query Language) é uma linguagem de consulta orientada a objetos, projetada para interagir com dados persistidos em um banco de dados relacional usando o JPA (Java Persistence API). Diferente do SQL, que opera em um nível mais baixo, o JPQL permite que você escreva consultas diretamente em termos dos seus objetos Java, abstraindo a complexidade da estrutura do banco de dados.
+O **Modelo de Maturidade de Richardson (RMM)** é um framework que serve como um guia para avaliar a qualidade e a evolução de APIs RESTful. Criado por Leonard Richardson, o RMM divide a jornada de desenvolvimento de uma API em três níveis distintos, cada um representando um estágio de maturidade na implementação dos princípios REST.
 
-**A anotação @Query**
-No Spring Data JPA, a anotação `@Query` permite que você escreva consultas JPQL personalizadas diretamente em seus métodos de repositório. Isso oferece uma grande flexibilidade para realizar consultas mais complexas que não podem ser expressas apenas pelos métodos de consulta por convenção (query methods).
+**Por que o RMM é importante?**
+* **Padronização:** O RMM fornece um padrão para a construção de APIs RESTful, facilitando a compreensão e a interação entre diferentes sistemas.
+* **Evolução:** O modelo permite que os desenvolvedores acompanhem a evolução de suas APIs ao longo do tempo, identificando oportunidades de melhoria.
+* **Qualidade:** Ao seguir os níveis do RMM, as APIs tendem a ser mais robustas, flexíveis e escaláveis.
 
-**Como usar a @Query**
-1. **Interface do repositório:**
-   * Crie uma interface que estenda `JpaRepository` e declare seus métodos de consulta.
-   * Utilize a anotação `@Query` acima do método, passando a sua consulta JPQL como um String.
+**Os três níveis de maturidade do RMM:**
+1. **Nível 0: POX (Plain Old XML)**
+   * **Características:** Nesse nível básico, o HTTP é utilizado apenas como um mecanismo de transporte de dados, sem explorar os verbos HTTP e os recursos de forma adequada. Geralmente, há um único endpoint para todas as operações.
+   * **Exemplo:** Uma API que expõe todos os dados em um único XML, sem utilizar verbos HTTP específicos para cada ação (criar, ler, atualizar, deletar).
 
-2. **Sintaxe da consulta:**
-   * A sintaxe do JPQL é semelhante ao SQL, mas opera em termos de entidades e atributos Java.
-   * Você pode usar os nomes das propriedades das suas entidades diretamente na consulta.
-   * Utilize os operadores de comparação, lógicos e funções disponíveis no JPQL.
+2. **Nível 1: Recursos**
+   * **Características:** O foco nesse nível é na identificação e representação de recursos individuais através de URIs. Cada recurso possui um URI único e as operações sobre esses recursos são mapeadas para os verbos HTTP correspondentes (GET, POST, PUT, DELETE).
+   * **Exemplo:** Uma API que expõe recursos como "/usuarios", "/produtos" e utiliza verbos HTTP adequados para cada operação (GET para obter um usuário, POST para criar um novo usuário).
 
-**Exemplo:**
-```java
-@Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+3. **Nível 2: Hipermídia como Controle de Aplicação (HATEOAS)**
+   * **Características:** O nível mais alto de maturidade, onde a API fornece links para outros recursos em suas respostas. Isso permite que o cliente descubra dinamicamente as ações disponíveis e os recursos relacionados, sem a necessidade de conhecimento prévio da estrutura da API.
+   * **Exemplo:** Ao obter um usuário, a resposta da API contém links para recursos relacionados, como "pedidos" ou "endereços", permitindo que o cliente navegue pela API de forma intuitiva.
 
-    @Query("from Produto where nome like %:nome%")
-    List<Produto> consultarPorNome(String nome);
-
-    @Query("from Produto where preco between :precoMin and :precoMax")
-    List<Produto> consultarPrecoEntre(@Param("precoMin") Double precoMin, @Param("precoMax") Double precoMax);
-}
-```
-
-**Vantagens de usar @Query:**
-* **Flexibilidade:** Permite escrever consultas complexas que não podem ser expressas por query methods.
-* **Reutilização:** As consultas podem ser reutilizadas em diferentes partes da aplicação.
-* **Melhora a legibilidade:** As consultas são escritas em termos dos objetos Java, tornando o código mais fácil de entender.
-* **Integração com o Spring Data:** Se integra perfeitamente com outras funcionalidades do Spring Data, como paginação, ordenação e projeções.
+**Benefícios de alcançar o nível 3:**
+* **Descubrabilidade:** Os clientes podem descobrir novas funcionalidades da API sem a necessidade de documentação extensa.
+* **Flexibilidade:** A API pode evoluir de forma mais fácil, adicionando novos recursos sem quebrar os clientes existentes.
+* **Reusabilidade:** Os clientes podem reutilizar os links fornecidos pela API para construir interfaces de usuário mais ricas e interativas.
 ---
-## Externalizando Consultas JPQL para um Arquivo XML
+## Nível 0 do Modelo de Maturidade de Richardson (RMM): POX (Plain Old XML)
 
-**Por que externalizar consultas JPQL?**
-* **Melhora na organização do código:** Separa a lógica de persistência da lógica de negócio, tornando o código mais limpo e fácil de manter.
-* **Reutilização de consultas:** Uma mesma consulta pode ser utilizada em diferentes partes da aplicação, evitando duplicação de código.
-* **Facilita a manutenção:** Alterações nas consultas podem ser feitas em um único lugar, reduzindo o risco de erros.
-* **Suporte a diferentes dialetos SQL:** Permite que a mesma aplicação seja utilizada com diferentes bancos de dados, ajustando as consultas para cada um.
+O **nível 0** do RMM, conhecido como **POX** (Plain Old XML), representa o estágio mais básico na evolução de uma API RESTful. Nessa fase, a API se utiliza do protocolo HTTP apenas como um mecanismo de transporte de dados, sem explorar ao máximo as suas funcionalidades e recursos. 
 
-**Como fazer?**
-1. **Criar o arquivo "orm.xml":**
-   * Dentro do package  src.main.resources.META-INF do seu projeto, crie um arquivo com o nome "orm.xml".
-   * O conteúdo desse arquivo deve seguir a especificação do JPA para arquivos ORM.xml.
+**Características do Nível 0:**
+* **Único endpoint:** Normalmente, existe apenas um único ponto de entrada para todas as operações da API.
+* **Verbos HTTP limitados:** O verbo HTTP mais utilizado é o POST, sendo empregado para todas as ações, como criar, ler, atualizar e deletar dados.
+* **Sem recursos bem definidos:** Não há uma clara identificação e representação de recursos individuais através de URIs.
+* **Falta de padronização:** A estrutura dos dados enviados e recebidos pode variar bastante, sem um formato bem definido.
 
-2. **Definir as consultas:**
-   * Dentro do arquivo "orm.xml", utilize as tags `<sql-query>` ou `<named-native-query>` para definir suas consultas JPQL.
+**Exemplo prático:**
+Imagine uma API que retorna informações sobre produtos. No nível 0, a requisição poderia ser feita para um único endpoint, como "/api/dados", e o método HTTP utilizado seria sempre POST. O corpo da requisição conteria um parâmetro indicando a operação desejada (buscar produto, criar produto, etc.) e os dados necessários. A resposta seria um documento XML contendo todos os dados solicitados.
 
-**Exemplo de um arquivo "orm.xml":**
+**Por que o nível 0 é considerado o menos maduro?**
+* **Falta de flexibilidade:** A API é pouco adaptável a mudanças, pois todas as operações são centralizadas em um único ponto.
+* **Dificuldade de manutenção:** A falta de padronização e a complexidade de tratar todas as operações em um único endpoint dificultam a manutenção da API.
+* **Desperdício de recursos do HTTP:** O protocolo HTTP oferece recursos como verbos HTTP específicos para cada ação, status codes para indicar o resultado da operação e headers para transportar informações adicionais. No nível 0, esses recursos não são aproveitados.
 
-```xml title:orm
-<?xml version="1.0" encoding="UTF-8"?>
-<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
-                 version="2.2">
-                 
-    <named-query name="findAllProdutos">
-        <query>SELECT p FROM Produto p</query>
-    </named-query>
+**Quando utilizar o nível 0?**
+Embora seja o nível menos maduro, o nível 0 pode ser adequado em algumas situações específicas, como:
+* **Protótipos rápidos:** Quando a necessidade é criar uma API simples e rápida para testar uma ideia.
+* **Sistemas legados:** Em sistemas antigos, onde a migração para um modelo mais maduro pode ser complexa e custosa.
 
-    <named-query name="findProdutosByNome">
-        <query>SELECT p FROM Produto p WHERE p.nome LIKE :nome</query>
-    </named-query>
-</entity-mappings>
+### Exemplo de Requisição
+**Cenário:** Uma API simples para obter informações sobre um usuário.
+
+**Requisição:**
+```
+POST /api/dados HTTP/1.1
+Content-Type: application/xml
+
+<request>
+    <operation>getUser</operation>
+    <userId>123</userId>
+</request>
 ```
 
-**Utilizando as consultas no código:**
-```java
-@Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-
-    // @Query(name = "findAllProdutos")
-    List<Produto> findAllProdutos();
-
-    // @Query(name = "findProdutosByNome")
-    List<Produto> findProdutosByNome(@Param("nome") String nome);
-}
+**Resposta:**
+```xml
+<response>
+    <user>
+        <name>João da Silva</name>
+        <email>joao@example.com</email>
+    </user>
+</response>
 ```
 
-**Observações importantes:**
-
-* **Nome das consultas:** O atributo `name` da tag `<named-query>` define o nome da consulta, que será utilizado na anotação `@Query` do seu repositório.
-* **Parâmetros:** Utilize a tag `<parameter>` para definir parâmetros na sua consulta. O nome do parâmetro deve corresponder ao nome do parâmetro utilizado na anotação `@Param`.
-* **Consultas nativas:** Se você precisar executar uma consulta SQL nativa, utilize a tag `<named-native-query>`.
-* **Prioridade:** As consultas definidas no arquivo "orm.xml" têm prioridade sobre as consultas definidas diretamente nas interfaces dos repositórios.
-
-**Vantagens de usar o arquivo "orm.xml":**
-* **Centralização:** Todas as consultas ficam em um único lugar, facilitando a gestão e a manutenção.
-* **Reutilização:** As consultas podem ser reutilizadas em diferentes classes e métodos.
-* **Testes:** É mais fácil testar as consultas de forma isolada.
-* **Separação de responsabilidades:** A lógica de negócio fica separada da lógica de persistência.
+**Análise:**
+* **Único endpoint:** Todas as operações são feitas para o mesmo endpoint `/api/dados`.
+* **Verbo HTTP:** Utiliza-se POST para todas as operações, mesmo para obter dados.
+* **Dados no corpo:** A operação e os parâmetros são enviados no corpo da requisição em formato XML.
 ---
-## Implementando um Repositório SDJ Customizado
+## Nível 1 do Modelo de Maturidade de Richardson (RMM): Recursos
 
-**Entendendo a Necessidade**
-Um repositório Spring Data JPA (SDJ) customizado é útil quando as funcionalidades padrão não atendem às suas necessidades específicas. Isso pode incluir:
-* **Consultas complexas:** Quando as consultas não podem ser expressas através dos métodos de consulta por convenção.
-* **Lógica de negócio:** Ao precisar adicionar lógica de negócio diretamente no acesso aos dados.
-* **Integrações com outros sistemas:** Ao precisar interagir com outras fontes de dados ou serviços.
+No nível 1 do RMM, damos um grande passo em direção à construção de APIs RESTful mais robustas e intuitivas. A principal característica desse nível é a **introdução de recursos**. 
 
-**Criando um Repositório Customizado**
-1. **Extender JpaRepository:**
-   * Crie uma interface que estenda `JpaRepository` e especifique o tipo da entidade e do ID.
+**O que são recursos?**
 
-2. **Anotar com @Repository:**
-   * Anote a interface com `@Repository` para que o Spring possa gerenciá-la como um bean.
+Em uma API RESTful, um recurso representa um elemento conceitual sobre o qual a aplicação deseja realizar operações. Por exemplo, em uma aplicação de e-commerce, os recursos poderiam ser "produtos", "clientes", "pedidos", etc. Cada recurso possui um **URI único** que o identifica.
 
-3. **Definir métodos personalizados:**
-   * Crie métodos com a lógica de acesso aos dados desejada.
-   * Utilize a anotação `@Query` para definir consultas JPQL ou nativas.
+**Características do Nível 1:**
 
-**Exemplo:**
-```java
-@Repository
-public interface ProdutoCustomRepository extends JpaRepository<Produto, Long> {
+* **URIs para recursos:** Cada recurso é identificado por um URI específico, como "/produtos", "/clientes/{id}".
+* **Verbos HTTP:** Os verbos HTTP são utilizados de forma mais adequada para representar as operações sobre os recursos:
+    * **GET:** Obter um recurso ou uma coleção de recursos.
+    * **POST:** Criar um novo recurso.
+    * **PUT:** Atualizar um recurso existente.
+    * **DELETE:** Deletar um recurso.
+* **Foco nos substantivos:** Os URIs são construídos utilizando substantivos para representar os recursos.
+* **Menor dependência de parâmetros na URL:** A maior parte da informação é passada no corpo da requisição, e não na URL.
 
-    @Query("SELECT p FROM Produto p WHERE p.nome LIKE %?1%")
-    List<Produto> findByNomeContaining(String nome);
+**Exemplo prático:**
 
-    // Método customizado com lógica adicional
-    List<Produto> findProdutosEmEstoque();
+Imagine uma API para gerenciar um blog. No nível 1, a API poderia ter os seguintes endpoints:
+
+* **GET /posts:** Retorna uma lista de todos os posts.
+* **GET /posts/{id}**: Retorna um post específico.
+* **POST /posts:** Cria um novo post.
+* **PUT /posts/{id}**: Atualiza um post existente.
+* **DELETE /posts/{id}**: Deleta um post.
+
+**Por que o nível 1 é um avanço em relação ao nível 0?**
+
+* **Melhor organização:** A divisão da API em recursos torna a estrutura mais clara e fácil de entender.
+* **Maior flexibilidade:** Os verbos HTTP permitem realizar diferentes operações sobre os mesmos recursos, tornando a API mais versátil.
+* **Melhora na descoberta de recursos:** Ao observar os URIs, é possível ter uma ideia dos recursos disponíveis na API.
+
+**Limitações do nível 1:**
+
+* **Falta de hipermídia:** A API ainda não fornece informações sobre as relações entre os recursos, o que pode limitar a descoberta de funcionalidades.
+* **Necessidade de documentação:** O cliente ainda precisa conhecer a estrutura da API e os formatos de dados para utilizar a API de forma eficaz.
+
+### Exemplo de Requisição
+**Cenário:** Uma API simples para obter informações sobre um usuário, agora utilizando recursos.
+
+**Requisição:**
+```
+GET /users/123 HTTP/1.1
+```
+
+**Resposta:**
+```json
+{
+    "name": "João da Silva",
+    "email": "joao@example.com"
 }
 ```
 
-**Injeção de Dependências**
-* **Injetar outros serviços:** Se precisar de outros serviços em seus métodos customizados, utilize a injeção de dependências do Spring.
-
-```java
-@Repository
-public class ProdutoCustomRepositoryImpl implements ProdutoCustomRepository {
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Override
-    public List<Produto> findProdutosEmEstoque() {
-        return produtoRepository.findAll().stream()
-                .filter(p -> p.getQuantidadeEstoque() > 0)
-                .collect(Collectors.toList());
-    }
-}
-```
-
-**Configuração do Spring**
-* **Habilitar interfaces de repositório:** Certifique-se de que o Spring esteja configurado para procurar e gerenciar interfaces de repositório.
-* **Registrar implementações customizadas:** Se você criou uma implementação customizada para um repositório, você pode registrá-la manualmente no contexto do Spring ou utilizar mecanismos de descoberta de componentes.
-
-**Quando usar Repositórios Customizados?**
-* **Consultas complexas:** Quando as consultas envolvem junções, subconsultas ou funções agregadas.
-* **Lógica de negócio:** Quando a lógica de acesso aos dados envolve validações, transformações ou cálculos.
-* **Integrações:** Quando você precisa integrar com outras fontes de dados ou serviços.
-* **Performance:** Quando você precisa otimizar a performance de consultas específicas.
-
-**Considerações Adicionais**
-* **Testes:** É fundamental testar seus repositórios customizados para garantir que eles funcionam corretamente.
-* **Performance:** Evite criar consultas complexas e ineficientes. Utilize índices e otimize suas consultas para melhorar o desempenho.
-* **Manutenibilidade:** Mantenha seus repositórios customizados organizados e fáceis de entender.
-
-**Benefícios dos Repositórios Customizados:**
-* **Flexibilidade:** Permite criar soluções personalizadas para suas necessidades específicas.
-* **Reusabilidade:** As consultas e a lógica de acesso aos dados podem ser reutilizadas em diferentes partes da aplicação.
-* **Manutenibilidade:** Separa a lógica de acesso aos dados da lógica de negócio, facilitando a manutenção.
+**Análise:**
+* **URI específico:** Cada recurso (usuário) possui um URI único.
+* **Verbo HTTP adequado:** Utiliza-se GET para obter um recurso.
+* **Dados na resposta:** A resposta contém apenas os dados do recurso solicitado.
 ---
-## Implementando Consultas Dinâmicas com JPQL
+## Nível 2 do Modelo de Maturidade de Richardson (RMM): HATEOAS
+O **nível 2 do RMM** é o ápice da maturidade em APIs RESTful e se caracteriza pela introdução do conceito de **HATEOAS (Hypermedia as the Engine of Application State)**, ou seja, a hipermídia como motor do estado da aplicação.
 
-**O que são consultas dinâmicas?**
-Consultas dinâmicas são aquelas que podem ser construídas em tempo de execução com base em critérios variáveis, permitindo uma maior flexibilidade na busca de dados. No contexto do Spring Data JPA, elas são especialmente úteis quando os critérios de busca podem mudar frequentemente ou quando o usuário precisa ter um controle mais granular sobre os resultados da consulta.
+### O que é HATEOAS?
+HATEOAS significa que a própria resposta da API contém links para outros recursos, permitindo que o cliente descubra dinamicamente quais ações podem ser realizadas e quais recursos estão relacionados. Em outras palavras, a API "se autodocumenta" e guia o cliente na sua interação.
 
-**Como implementar consultas dinâmicas com JPQL?**
-Existem diversas abordagens para implementar consultas dinâmicas com JPQL no Spring Data JPA. As mais comuns são:
-
-### 1. **Specifications:**
-* **Criar uma interface Specification:** Esta interface define um método `toPredicate`, que recebe um `Root<T>` e um `CriteriaQuery<T>` e retorna um `Predicate`.
-* **Construir o Predicate:** Dentro do método `toPredicate`, você pode construir o `Predicate` de forma dinâmica, adicionando as cláusulas WHERE, AND, OR, etc., de acordo com os critérios de busca.
-* **Utilizar a Specification no repositório:** O método de busca do repositório receberá a Specification como parâmetro.
-
-**Exemplo:**
-```java
-public interface ProdutoSpecification {
-    Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb);
-}
-
-public class ProdutoSpecificationImpl implements ProdutoSpecification {
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        // Construir o Predicate com base nos critérios de busca
-        List<Predicate> predicates = new ArrayList<>();
-        // ... adicionar predicates
-
-        return cb.and(predicates.toArray(new Predicate[0]));
+**Exemplo prático:**
+Imagine uma API de um blog. Ao fazer uma requisição GET para obter um post específico, a resposta poderia ser:
+```json
+{
+  "id": 1,
+  "title": "Meu primeiro post",
+  "content": "Este é o conteúdo...",
+  "author": {
+    "id": 2,
+    "name": "João da Silva"
+  },
+  "_links": {
+    "self": {
+      "href": "/posts/1"
+    },
+    "author": {
+      "href": "/users/2"
+    },
+    "comments": {
+      "href": "/posts/1/comments"
     }
+  }
 }
 ```
 
-```java
-public interface ProdutoRepository extends JpaRepository<Produto, Long>, JpaSpecificationExecutor<Produto> {
-}
-```
+Observe que a resposta contém um campo` "_links" `com links para o próprio recurso (self), para o autor do post e para os comentários do post. Isso significa que o cliente pode seguir esses links para obter mais informações ou realizar outras ações, como:
 
-### 2. **@Query com parâmetros:**
-* **Utilizar a anotação @Query:** Defina a consulta JPQL com parâmetros.
-* **Passar os parâmetros no método do repositório:** Os valores dos parâmetros serão passados dinamicamente no momento da chamada do método.
+* Obter os detalhes do autor clicando no link "/users/2".
+* Visualizar os comentários do post acessando "/posts/1/comments".
 
-**Exemplo:**
-```java
-@Query("SELECT p FROM Produto p WHERE p.nome LIKE :nome AND p.preco >= :precoMin")
-List<Produto> findByNomeAndPreco(@Param("nome") String nome, @Param("precoMin") Double precoMin);
-```
+### Benefícios do HATEOAS
+* **Descoberta:** O cliente não precisa conhecer antecipadamente toda a estrutura da API. Ele pode explorar os recursos disponíveis seguindo os links fornecidos nas respostas.
+* **Flexibilidade:** A API pode evoluir sem quebrar os clientes existentes, pois os links sempre indicam as ações disponíveis no momento.
+* **Reusabilidade:** Os clientes podem construir interfaces de usuário mais ricas e interativas, aproveitando as informações fornecidas pelos links.
+* **Independência do cliente:** O cliente não precisa estar acoplado a uma documentação estática da API.
 
-### 3. **JPQL dinâmico com StringBuilder:**
-* **Construir a consulta em tempo de execução:** Utilize um `StringBuilder` para construir a string da consulta JPQL de forma dinâmica.
-* **Injetar os parâmetros:** Utilize o `setParameter` do `TypedQuery` para adicionar os parâmetros à consulta.
+### Comparação com os Níveis Anteriores
 
-**Exemplo:**
-```java
-StringBuilder sb = new StringBuilder("SELECT p FROM Produto p WHERE 1=1");
-if (nome != null) {
-    sb.append(" AND p.nome LIKE :nome");
-}
-if (precoMin != null) {
-    sb.append(" AND p.preco >= :precoMin");
-}
-
-TypedQuery<Produto> query = entityManager.createQuery(sb.toString(), Produto.class);
-if (nome != null) {
-    query.setParameter("nome", "%" + nome + "%");
-}
-if (precoMin != null) {
-    query.setParameter("precoMin", precoMin);
-}
-
-return query.getResultList();
-```
-
-**Qual abordagem escolher?**
-* **Specifications:** Ideal para consultas complexas e dinâmicas, com múltiplos critérios de busca.
-* **@Query com parâmetros:** Simples e eficaz para consultas com poucos parâmetros e critérios fixos.
-* **JPQL dinâmico com StringBuilder:** Maior flexibilidade, mas pode ser mais propenso a erros se não for bem implementado.
-
-**Considerações importantes:**
-* **Segurança:** Evite a injeção de SQL utilizando parâmetros nomeados e validando os dados de entrada.
-* **Performance:** Para consultas complexas, considere utilizar índices e otimizar as consultas.
-* **Legibilidade:** Mantenha o código das consultas dinâmicas legível e fácil de entender.
-
-**Exemplo completo com Specifications:**
-```java
-public class ProdutoController {
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    public List<Produto> buscarProdutos(String nome, Double precoMin) {
-        ProdutoSpecification spec = new ProdutoSpecificationImpl(nome, precoMin);
-        return produtoRepository.findAll(spec);
-    }
-}
-```
----
-## Implementando uma Consulta Simples com Criteria API
-A Criteria API é uma ferramenta poderosa do JPA que permite construir consultas de forma programática, oferecendo uma grande flexibilidade para criar consultas dinâmicas. Vamos explorar um exemplo simples para entender como funciona:
-
-**Cenário:**
-Imagine que temos uma entidade `Produto` com os atributos `id`, `nome` e `preco`. Queremos buscar todos os produtos com o preço maior que 100.
-
-**1. Criar a interface do repositório:**
-```java
-public interface ProdutoRepository extends JpaRepository<Produto, Long>, JpaSpecificationExecutor<Produto> {
-}
-```
-* **JpaRepository:** Fornece métodos básicos de CRUD.
-* **JpaSpecificationExecutor:** Permite utilizar a Criteria API para consultas mais complexas.
-
-**2. Criar a especificação:**
-```java
-import javax.persistence.criteria.*;
-import org.springframework.data.jpa.domain.Specification;
-
-public class ProdutoSpecification implements Specification<Produto> {
-
-    @Override
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        return cb.greaterThan(root.get("preco"), 100);
-    }
-}
-```
-* **Root:** Representa a entidade raiz da consulta (Produto).
-* **CriteriaQuery:** Representa a consulta em si.
-* **CriteriaBuilder:** Permite construir os critérios da consulta (igual a, maior que, etc.).
-* **Predicate:** Representa uma condição lógica da consulta.
-
-**3. Utilizar a especificação no serviço:**
-```java
-@Service
-public class ProdutoService {
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    public List<Produto> buscarProdutosCaros() {
-        ProdutoSpecification spec = new ProdutoSpecification();
-        return produtoRepository.findAll(spec);
-    }
-}
-```
-**Explicação:**
-* A classe `ProdutoSpecification` implementa a interface `Specification<Produto>`.
-* O método `toPredicate` constrói o predicado `cb.greaterThan(root.get("preco"), 100)`, que significa "o preço do produto é maior que 100".
-* A classe `ProdutoService` utiliza o método `findAll` do repositório, passando a especificação como parâmetro.
-
-**Vantagens da Criteria API:**
-* **Flexibilidade:** Permite construir consultas complexas de forma programática.
-* **Tipo seguro:** Evita erros de sintaxe em tempo de compilação.
-* **Reutilizável:** As especificações podem ser reutilizadas em diferentes partes da aplicação.
-* **Integração com o Spring Data JPA:** Se integra perfeitamente com o Spring Data JPA.
-
-**Exemplo mais complexo:**
-```java
-public class ProdutoSpecification implements Specification<Produto> {
-
-    private String nome;
-    private Double precoMin;
-
-    public ProdutoSpecification(String nome, Double precoMin) {
-        this.nome = nome;
-        this.precoMin = precoMin;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        List<Predicate> predicates = new ArrayList<>();
-        if (nome != null) {
-            predicates.add(cb.like(root.get("nome"), "%" + nome + "%"));
-        }
-        if (precoMin != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("preco"), precoMin));
-        }
-        return cb.and(predicates.toArray(new Predicate[0]));
-    }
-}
-```
-Neste exemplo, a especificação permite buscar produtos por nome e preço mínimo, criando um predicado composto com base nos parâmetros fornecidos.
+| Característica | Nível 0 | Nível 1 | Nível 2 |
+|---|---|---|---|
+| Descoberta | Manual | Parcial | Total |
+| Flexibilidade | Baixa | Média | Alta |
+| Reusabilidade | Baixa | Média | Alta |
+| Documentação | Essencial | Necessária | Menos necessária |
 
 ---
-## Adicionando Restrições na Cláusula WHERE com Criteria API
-A Criteria API oferece uma maneira flexível e tipo-segura de construir consultas dinâmicas no JPA. Uma das suas principais funcionalidades é a capacidade de adicionar restrições à cláusula WHERE, permitindo que você filtre os resultados de sua consulta de acordo com critérios específicos.
+## Nível 3 do Modelo de Maturidade de Richardson (RMM): HATEOAS em Ação
+O **nível 3 do RMM** é o ápice da maturidade em APIs RESTful e se concentra inteiramente em **HATEOAS (Hypermedia as the Engine of Application State)**, ou seja, a hipermídia como motor do estado da aplicação.
 
-**Entendendo os Componentes:**
-* **Root:** Representa a entidade raiz da sua consulta.
-* **CriteriaBuilder:** Permite criar os critérios (igualdade, maior que, etc.) para a sua consulta.
-* **Predicate:** Representa uma condição lógica da consulta.
-* **CriteriaQuery:** Representa a consulta em si.
+### O que significa HATEOAS no Nível 3?
+No nível 3, a API não apenas fornece links para outros recursos, mas também utiliza esses links para **controlar o estado da aplicação**. Isso significa que o cliente pode descobrir não apenas quais recursos existem, mas também quais ações podem ser realizadas sobre esses recursos, tudo a partir das informações contidas nas respostas da API.
 
-**Construindo Restrições:**
-Para adicionar restrições à cláusula WHERE, você utiliza o método `where` do `CriteriaQuery` e passa um ou mais `Predicate`s. O `CriteriaBuilder` oferece diversos métodos para criar `Predicate`s, como:
+![[Pasted image 20241028101020.png|500]] ![[Pasted image 20241028101205.png|500]]
 
-* **Igualdade:** `cb.equal(root.get("campo"), valor)`
-* **Maior que:** `cb.greaterThan(root.get("campo"), valor)`
-* **Menor que:** `cb.lessThan(root.get("campo"), valor)`
-* **Entre:** `cb.between(root.get("campo"), valorMinimo, valorMaximo)`
-* **LIKE:** `cb.like(root.get("campo"), "%valor%")`
-* **IN:** `cb.in(root.get("campo")).value(valor1).value(valor2)`
-* **IsNull:** `cb.isNull(root.get("campo"))`
-* **IsNotNull:** `cb.isNotNull(root.get("campo"))`
-
-**Combinando Restrições:**
-Para combinar múltiplas restrições, você pode utilizar os métodos `and` e `or` do `CriteriaBuilder`.
-
-**Exemplo:**
-```java
-public class ProdutoSpecification implements Specification<Produto> {
-
-    @Override
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        // Busca por produtos com preço maior que 100 e nome começando com "Produto"
-        Predicate precoMaiorQueCem = cb.greaterThan(root.get("preco"), 100);
-        Predicate nomeComecaComProduto = cb.like(root.get("nome"), "Produto%");
-        return cb.and(precoMaiorQueCem, nomeComecaComProduto);
+**Exemplo prático:**
+Imagine uma API de um e-commerce onde um usuário adicionou um produto ao carrinho. A resposta ao adicionar o produto poderia ser:
+```json
+{
+  "message": "Produto adicionado ao carrinho com sucesso",
+  "_links": {
+    "self": {
+      "href": "/cart"
+    },
+    "checkout": {
+      "href": "/checkout"
+    },
+    "continueShopping": {
+      "href": "/products"
     }
+  }
 }
 ```
-
-**Exemplo com Múltiplos Parâmetros:**
-```java
-public class ProdutoSpecification implements Specification<Produto> {
-
-    private String nome;
-    private Double precoMin;
-
-    public ProdutoSpecification(String nome, Double precoMin) {
-        this.nome = nome;
-        this.precoMin = precoMin;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        List<Predicate> predicates = new ArrayList<>();
-        if (nome != null) {
-            predicates.add(cb.like(root.get("nome"), "%" + nome + "%"));
-        }
-        if (precoMin != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("preco"), precoMin));
-        }
-        return cb.and(predicates.toArray(new Predicate[0]));
-    }
-}
-```
-
-**Utilizando a Especificação no Repositório:**
-```java
-public interface ProdutoRepository extends JpaRepository<Produto, Long>, JpaSpecificationExecutor<Produto> {
-}
-```
-
-**Chamando a Consulta:**
-```java
-ProdutoSpecification spec = new ProdutoSpecification("Produto", 100.0);
-List<Produto> produtos = produtoRepository.findAll(spec);
-```
-
-**Considerações Adicionais:**
-* **Join:** Para realizar junções entre entidades, utilize o método `join` do `Root`.
-* **Subqueries:** A Criteria API também suporta subqueries.
-* **Grouping e Having:** Para realizar agrupamentos e aplicar condições sobre os grupos, utilize os métodos `groupBy` e `having` do `CriteriaQuery`.
-* **Performance:** Para consultas complexas, é importante otimizar as consultas utilizando índices e evitando operações desnecessárias.
----
-## Tornando a Consulta com Criteria API Dinâmica
-A Criteria API oferece uma excelente flexibilidade para construir consultas dinâmicas, permitindo que você adapte a consulta de acordo com os critérios fornecidos pelo usuário ou outras variáveis da aplicação.
-
-**Como tornar a consulta dinâmica:**
-1. **Parametrizar a especificação:**
-   * Crie um construtor na sua classe de especificação para receber os parâmetros de filtro.
-   * Armazene esses parâmetros em atributos da classe.
-   * Utilize esses atributos dentro do método `toPredicate` para construir a consulta de forma dinâmica.
-
-2. **Construir a consulta condicionalmente:**
-   * Dentro do método `toPredicate`, utilize estruturas condicionais (if, else) para adicionar ou remover partes da consulta com base nos valores dos parâmetros.
-
-**Exemplo:**
-```java
-public class ProdutoSpecification implements Specification<Produto> {
-
-    private String nome;
-    private Double precoMin;
-    private Double precoMax;
-
-    public ProdutoSpecification(String nome, Double precoMin, Double precoMax) {
-        this.nome = nome;
-        this.precoMin = precoMin;
-        this.precoMax = precoMax;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        List<Predicate> predicates = new ArrayList<>();
-
-        if (nome != null) {
-            predicates.add(cb.like(root.get("nome"), "%" + nome + "%"));
-        }
-
-        if (precoMin != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("preco"), precoMin));
-        }
-
-        if (precoMax != null) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("preco"), precoMax));
-        }
-
-        return cb.and(predicates.toArray(new Predicate[0]));
-    }
-}
-```
-
-**Explicação:**
-* A especificação agora aceita três parâmetros: nome, preço mínimo e preço máximo.
-* Dentro do método `toPredicate`, cada parâmetro é verificado e um predicado é adicionado à lista de predicados se o parâmetro não for nulo.
-* Ao final, todos os predicados são combinados utilizando o `and` do `CriteriaBuilder`.
-
-**Utilizando a especificação:**
-```java
-ProdutoSpecification spec = new ProdutoSpecification("Produto", 100.0, 200.0);
-List<Produto> produtos = produtoRepository.findAll(spec);
-```
-
-**Flexibilidade e Personalização:**
-* **Múltiplos filtros:** Você pode adicionar quantos parâmetros de filtro forem necessários à sua especificação.
-* **Combinações de filtros:** Utilize os métodos `and`, `or` e `not` do `CriteriaBuilder` para criar combinações complexas de filtros.
-* **Tipos de dados:** A Criteria API suporta diversos tipos de dados, permitindo criar filtros para diferentes campos da entidade.
-* **Funções:** Utilize funções como `lower`, `upper`, `concat` para realizar operações mais complexas nos campos.
-* **Subqueries:** Crie subconsultas para relacionar dados de diferentes entidades.
-
-**Exemplo com subquery:**
-```java
-// Supondo que Produto tem uma relação com Categoria
-Subquery<Long> subquery = query.subquery(Long.class);
-Root<Categoria> categoria = subquery.from(Categoria.class);
-subquery.select(categoria.get("id"));
-subquery.where(cb.equal(categoria.get("nome"), "Eletrônicos"));
-predicates.add(cb.in(root.get("categoria").get("id")).value(subquery));
-```
-
-**Considerações:**
-* **Performance:** Para consultas complexas, é fundamental otimizar as consultas utilizando índices e evitando operações desnecessárias.
-* **Legibilidade:** Mantenha o código da sua especificação organizado e comentado para facilitar a manutenção.
-* **Segurança:** Evite a injeção de SQL utilizando parâmetros nomeados e validando os dados de entrada.
----
-## O Padrão Specifications (DDD) com Spring Data JPA
-O padrão Specifications, proveniente do Domain Driven Design (DDD), é uma ferramenta poderosa para construir consultas dinâmicas e flexíveis em aplicações Java utilizando o Spring Data JPA. Ele permite encapsular regras de negócio complexas em objetos, tornando o código mais legível, manutenível e testável.
-
-### O que são Specifications?
-No contexto do DDD, uma Specification representa uma regra de negócio que define um conjunto de critérios para filtrar um conjunto de entidades. No Spring Data JPA, uma Specification é uma interface que define um método `toPredicate`, responsável por construir um `Predicate` (condição lógica) a partir de um `Root` (entidade raiz), `CriteriaQuery` e `CriteriaBuilder`.
-
-### Benefícios do uso de Specifications:
-* **Reutilização de lógica:** Regras de negócio complexas podem ser encapsuladas em Specifications e reutilizadas em diferentes partes da aplicação.
-* **Testes:** É mais fácil testar as Specifications isoladamente, garantindo a corretude das regras de negócio.
-* **Leiturabilidade:** O código fica mais legível ao separar a lógica de negócio da implementação técnica da consulta.
-* **Flexibilidade:** Permite construir consultas dinâmicas de forma declarativa, facilitando a adaptação a mudanças nos requisitos.
-
-### Implementando Specifications
-**1. Criar a interface Specification:**
-```java
-import javax.persistence.criteria.*;
-import org.springframework.data.jpa.domain.Specification;
-
-public interface ProdutoSpecification extends Specification<Produto> {
-}
-```
-
-**2. Implementar a Specification:**
-```java
-public class ProdutoNomeSpecification implements ProdutoSpecification {
-
-    private String nome;
-
-    public ProdutoNomeSpecification(String nome) {
-        this.nome = nome;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        return cb.like(root.get("nome"), "%" + nome + "%");
-    }
-}
-```
-
-**3. Utilizar a Specification no repositório:**
-```java
-public interface ProdutoRepository extends JpaRepository<Produto, Long>, JpaSpecificationExecutor<Produto> {
-}
-```
-
-**4. Chamar a consulta:**
-```java
-ProdutoSpecification spec = new ProdutoNomeSpecification("Notebook");
-List<Produto> produtos = produtoRepository.findAll(spec);
-```
-
-### Combinando Múltiplas Specifications
-Para combinar múltiplas Specifications, você pode utilizar os métodos `and`, `or` e `not` do `CriteriaBuilder`.
-
-```java
-ProdutoSpecification specNome = new ProdutoNomeSpecification("Notebook");
-ProdutoSpecification specPreco = new ProdutoPrecoSpecification(1000.0);
-
-Specification<Produto> combinedSpec = specNome.and(specPreco);
-List<Produto> produtos = produtoRepository.findAll(combinedSpec);
-```
-
-### Criando Specifications Dinâmicas
-Você pode criar Specifications dinâmicas passando parâmetros para o construtor da classe de especificação. Isso permite construir consultas personalizadas com base em diferentes critérios.
-
-```java
-public class ProdutoSpecification implements Specification<Produto> {
-    // ...
-    public Predicate toPredicate(Root<Produto> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        // Construir a consulta com base nos parâmetros
-    }
-}
-```
-
-### Vantagens Adicionais
-* **Regras de negócio complexas:** As Specifications podem encapsular regras de negócio complexas, como validações, cálculos e combinações de critérios.
-* **Testes unitários:** As Specifications podem ser testadas isoladamente, garantindo a corretude das regras de negócio.
-* **Integração com outras ferramentas:** As Specifications podem ser integradas com outras ferramentas, como frameworks de busca e ferramentas de relatório.
----
-## Criando uma Fábrica de Specifications
-Uma fábrica de Specifications pode ser uma ferramenta poderosa para centralizar a criação de consultas dinâmicas e complexas em sua aplicação. Ela permite que você encapsule a lógica de construção de Specifications, tornando o código mais organizado e reutilizável.
-
-**Por que usar uma fábrica de Specifications?**
-* **Reutilização de código:** Crie Specifications genéricas que podem ser reutilizadas em diferentes partes da aplicação.
-* **Facilidade de manutenção:** Centralize a lógica de construção de consultas em um único lugar.
-* **Melhora na legibilidade:** Separe a lógica de negócio da implementação técnica da consulta.
-* **Flexibilidade:** Permite criar consultas dinâmicas com base em diferentes critérios.
-
-**Como criar uma fábrica de Specifications:**
-
-1. **Definir a interface da fábrica:**
-```java
-public interface SpecificationFactory<T> {
-    Specification<T> createSpecification(Map<String, Object> filters);
-}
-```
-
-2. **Implementar a fábrica:**
-```java
-public class ProdutoSpecificationFactory implements SpecificationFactory<Produto> {
-
-    @Override
-    public Specification<Produto> createSpecification(Map<String, Object> filters) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Produto> query = cb.createQuery(Produto.class);
-        Root<Produto> root = query.from(Produto.class);
-
-        List<Predicate> predicates = new ArrayList<>();
-
-        filters.forEach((key, value) -> {
-            switch (key) {
-                case "nome":
-                    predicates.add(cb.like(root.get("nome"), "%" + value + "%"));
-                    break;
-                case "preco":
-                    predicates.add(cb.greaterThanOrEqualTo(root.get("preco"), (Double) value));
-                    break;
-                // ... outros filtros
-            }
-        });
-
-        return cb.and(predicates.toArray(new Predicate[0]));
-    }
-}
-```
-
-3. **Utilizar a fábrica:**
-```java
-Map<String, Object> filters = new HashMap<>();
-filters.put("nome", "Notebook");
-filters.put("preco", 1000.0);
-
-ProdutoSpecificationFactory factory = new ProdutoSpecificationFactory();
-Specification<Produto> spec = factory.createSpecification(filters);
-List<Produto> produtos = produtoRepository.findAll(spec);
-```
-
-**Explicação:**
-* A interface `SpecificationFactory` define um método `createSpecification` que recebe um mapa de filtros e retorna uma Specification.
-* A implementação da fábrica itera sobre o mapa de filtros e constrói os predicados de acordo com as chaves e valores.
-* A consulta final é construída combinando todos os predicados.
-
-**Vantagens desta abordagem:**
-* **Flexibilidade:** Você pode adicionar novos filtros facilmente, apenas adicionando um novo case no switch.
-* **Reutilização:** A fábrica pode ser reutilizada em diferentes partes da aplicação.
-* **Extensibilidade:** Você pode criar fábricas mais complexas para lidar com filtros mais sofisticados.
-
-**Considerações:**
-* **Tipo seguro:** É recomendado utilizar tipos seguros para os valores dos filtros, como `Enum`s ou classes específicas.
-* **Performance:** Para consultas complexas, é importante otimizar as consultas utilizando índices e evitando operações desnecessárias.
-* **Segurança:** Evite a injeção de SQL utilizando parâmetros nomeados e validando os dados de entrada.
-
-**Exemplo com Enum:**
-```java
-public enum FilterType {
-    NOME, PRECO, CATEGORIA
-}
-
-public class ProdutoSpecificationFactory implements SpecificationFactory<Produto> {
-    // ...
-    switch (key) {
-        case "NOME":
-            predicates.add(cb.like(root.get("nome"), "%" + value + "%"));
-            break;
-        // ... outros casos
-    }
-}
-```
----
-## Injetando o Próprio Repositório na Implementação Customizada e a Anotação @Lazy
-
-### Entendendo o Cenário
-A injeção de um repositório dentro da própria implementação customizada pode parecer contraintuitiva à primeira vista, mas existem cenários específicos onde essa abordagem pode ser útil, especialmente quando se trabalha com consultas complexas ou quando é necessário realizar operações recursivas.
-
-A anotação `@Lazy` é utilizada para controlar a inicialização de beans no Spring. Ao aplicar `@Lazy` a um bean, ele não será inicializado durante o startup do contexto do Spring, mas sim quando for injetado em outro bean pela primeira vez.
-
-### Quando Utilizar essa Abordagem?
-* **Consultas recursivas:** Em casos onde uma entidade precisa consultar a si mesma ou outras entidades relacionadas em uma hierarquia complexa, a injeção do repositório pode ajudar a simplificar a lógica.
-* **Customizações complexas:** Quando a consulta envolve lógica de negócio complexa ou cálculos específicos, a injeção do repositório permite centralizar essa lógica em um único lugar.
-* **Performance:** Em alguns casos, a injeção do repositório pode ajudar a otimizar a performance, evitando consultas desnecessárias.
-
-### Exemplo Prático
-```java
-@Service
-public class ProdutoService {
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    public List<Produto> buscarProdutosComRelacionamentos() {
-        List<Produto> produtos = produtoRepository.findAll();
-        produtos.forEach(produto -> {
-            // Carregar os relacionamentos do produto de forma lazy
-            produto.getRelacionamentos().forEach(relacionamento -> {
-                // ... lógica para carregar os dados do relacionamento
-            });
-        });
-        return produtos;
-    }
-}
-```
-
-**Problema:** Neste exemplo, estamos carregando todos os produtos e depois carregando os relacionamentos de cada produto. Se a tabela de relacionamentos for muito grande, isso pode impactar o desempenho.
-
-**Solução com injeção do repositório:**
-```java
-@Service
-public class ProdutoService {
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Autowired
-    @Lazy
-    private ProdutoService produtoService; // Injeção do próprio serviço
-
-    public List<Produto> buscarProdutosComRelacionamentos() {
-        List<Produto> produtos = produtoRepository.findAll();
-        produtos.forEach(produto -> {
-            // Carregar os relacionamentos do produto de forma lazy, utilizando o próprio serviço
-            produto.setRelacionamentos(produtoService.buscarRelacionamentosPorProduto(produto.getId()));
-        });
-        return produtos;
-    }
-
-    public List<Relacionamento> buscarRelacionamentosPorProduto(Long produtoId) {
-        // Lógica para buscar os relacionamentos do produto
-        return relacionamentoRepository.findByProdutoId(produtoId);
-    }
-}
-```
-
-**Explicação:**
-* **Injeção circular:** Ao injetar o `ProdutoService` dentro de si mesmo, criamos uma injeção circular. A anotação `@Lazy` garante que o `ProdutoService` seja inicializado apenas quando necessário, evitando um ciclo infinito.
-* **Carga lazy dos relacionamentos:** Ao chamar o método `buscarRelacionamentosPorProduto` dentro do loop, estamos carregando os relacionamentos de cada produto de forma lazy, evitando carregar todos os relacionamentos de uma vez.
-
-### Considerações Importantes
-* **Ciclo de dependência:** A injeção circular deve ser utilizada com cuidado, pois pode levar a problemas de inicialização se não for configurada corretamente.
-* **Performance:** Avalie o impacto da injeção do repositório na performance da sua aplicação. Em alguns casos, pode ser mais eficiente utilizar mecanismos de lazy loading do JPA.
-* **Testes:** É fundamental escrever testes unitários para garantir que a lógica funcione corretamente.
-* **Alternativas:** Considere utilizar outras abordagens, como projeções ou view objects, para resolver problemas de carga excessiva.
----
-## Estendendo o JpaRepository para Customizar o Repositório Base
-
-**Entendendo a necessidade:**
-
-Ao trabalhar com Spring Data JPA, o `JpaRepository` oferece uma base sólida para operações CRUD em entidades. No entanto, em muitos cenários, é necessário adicionar funcionalidades personalizadas para atender a requisitos específicos do domínio. Estender o `JpaRepository` permite criar repositórios customizados com métodos e comportamentos únicos.
-
-**Por que estender o JpaRepository?**
-
-* **Métodos personalizados:** Criar métodos para consultas complexas que não são diretamente suportadas pela query method implementation.
-* **Lógica de negócio específica:** Encapsular lógica de negócio relacionada ao domínio dentro do repositório.
-* **Herança de comportamentos:** Herdar métodos e funcionalidades do `JpaRepository` e adicioná-las.
-
-**Como estender o JpaRepository:**
-
-1. **Criar uma interface:**
-   ```java
-   public interface CustomProdutoRepository extends JpaRepository<Produto, Long> {
-       List<Produto> findByNomeContaining(String nome);
-       // Outros métodos personalizados
-   }
-   ```
-2. **Criar a implementação:**
-   ```java
-   @Repository
-   public class CustomProdutoRepositoryImpl implements CustomProdutoRepository {
-       @PersistenceContext
-       private EntityManager entityManager;
-
-       @Override
-       public List<Produto> findByNomeContaining(String nome) {
-           CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-           CriteriaQuery<Produto> query = cb.createQuery(Produto.class);
-           Root<Produto> root = query.from(Produto.class);
-           return entityManager.createQuery(query
-                   .where(cb.like(root.get("nome"), "%" + nome + "%")))
-                   .getResultList();
-       }
-   }
-   ```
-3. **Configurar a interface:**
-   ```java
-   @Repository
-   public interface ProdutoRepository extends CustomProdutoRepository {
-       // Outros métodos do JpaRepository
-   }
-   ```
-
-**Explicando o código:**
-
-* **Interface customizada:** A interface `CustomProdutoRepository` estende o `JpaRepository` e define o método personalizado `findByNomeContaining`.
-* **Implementação customizada:** A classe `CustomProdutoRepositoryImpl` implementa a interface customizada e fornece a implementação do método personalizado utilizando o `EntityManager`.
-* **Combinação:** A interface `ProdutoRepository` estende tanto o `JpaRepository` quanto a interface customizada, combinando os métodos de ambos.
-
-**Vantagens:**
-
-* **Reutilização:** O `JpaRepository` fornece métodos básicos de CRUD, que podem ser reutilizados.
-* **Flexibilidade:** Permite criar métodos personalizados para atender a requisitos específicos.
-* **Organização:** Separa a lógica de acesso aos dados da lógica de negócio.
-* **Testes:** Facilita a criação de testes unitários para os métodos personalizados.
-
-**Considerações:**
-
-* **Performance:** Para consultas complexas, considere utilizar índices para melhorar o desempenho.
-* **Legibilidade:** Escreva código claro e conciso, utilizando nomes de métodos significativos.
-* **Testes:** Crie testes unitários para garantir a corretude dos métodos personalizados.
-* **Convenções:** Siga as convenções de nomenclatura do Spring Data JPA para facilitar a compreensão do código.
-
-**Cenários de uso:**
-
-* **Consultas complexas:** Joins, agrupamentos, funções de agregação.
-* **Lógica de negócios específica:** Validações, cálculos, transformações de dados.
-* **Personalização do comportamento:** Sobrescrever métodos do `JpaRepository` para adicionar comportamento personalizado.
-
-**Exemplo com Criteria API:**
-O exemplo acima utiliza a Criteria API para construir a consulta. A Criteria API oferece uma forma mais flexível e poderosa de criar consultas dinâmicas.
-
-**Outras opções:**
-
-* **@Query:** Utilizar a anotação `@Query` para escrever consultas JPQL ou nativas.
-* **Specifications:** Utilizar o padrão Specifications para criar consultas dinâmicas e complexas.
-* **Projections:** Projetar os resultados da consulta em objetos personalizados.
+Observe que a resposta não apenas confirma a adição do produto, mas também fornece links para as próximas ações possíveis:
+
+* **checkout:** Finalizar a compra.
+* **continueShopping:** Continuar adicionando produtos ao carrinho.
+
+**Benefícios do Nível 3:**
+* **Descoberta completa:** O cliente não precisa de nenhuma documentação externa para interagir com a API.
+* **Flexibilidade máxima:** A API pode evoluir sem afetar os clientes existentes, pois os links sempre indicam as ações disponíveis.
+* **Experiência do usuário aprimorada:** A API se torna mais intuitiva, guiando o usuário pelas diferentes etapas de uma tarefa.
+* **Reusabilidade:** Os clientes podem construir interfaces de usuário mais ricas e personalizáveis.
+
+### Características do Nível 3
+* **Links em todas as respostas:** Todos os recursos incluem links para recursos relacionados e ações possíveis.
+* **Estado da aplicação controlado por links:** Os links guiam o cliente pelas diferentes etapas de um fluxo.
+* **Mínima documentação:** A documentação da API pode ser reduzida significativamente, pois a maior parte das informações está contida nos links.
+
+### Desafios da Implementação
+* **Complexidade:** A implementação de HATEOAS pode ser mais complexa do que os níveis anteriores.
+* **Design cuidadoso:** É necessário um design cuidadoso dos estados da aplicação e dos links para garantir uma boa experiência do usuário.
+* **Ferramentas:** Existem poucas ferramentas para auxiliar no desenvolvimento de APIs com HATEOAS.
 ---
