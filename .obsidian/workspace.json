@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Java/Sintaxe Java/Terminal e Argumentos.md",
+                "file": "Frameworks/Spring REST/Validações com Bean Validation.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Terminal e Argumentos"
+              "title": "Validações com Bean Validation"
             }
           }
         ]
@@ -165,8 +165,8 @@
             "state": {
               "type": "advanced-tables-toolbar",
               "state": {},
-              "icon": "spreadsheet",
-              "title": "Advanced Tables"
+              "icon": "lucide-file",
+              "title": "Plugin desativado"
             }
           }
         ]
@@ -188,9 +188,12 @@
   },
   "active": "e9825782aead2b33",
   "lastOpenFiles": [
-    "README.md",
-    "Frameworks/Spring REST/Pool de Conexões e Flyway.md",
     "Frameworks/Spring REST/Criando um projeto do zero.md",
+    "Frameworks/Spring REST/Pool de Conexões e Flyway.md",
+    "Frameworks/Spring REST/Validações com Bean Validation.md",
+    "Frameworks/Spring REST/Tratamento e modelagem de erros da API.md",
+    "Java/Sintaxe Java/Terminal e Argumentos.md",
+    "README.md",
     "Frameworks/Spring REST/JPA e Hibernate.md",
     "Frameworks/Spring REST/Spring 🍃.md",
     "Frameworks/Spring REST",
@@ -224,9 +227,6 @@
     "Clean Code/Padrão de projeto Repository.md",
     "Frameworks",
     "Databases/SQL.md",
-    "Java/Arrays.md",
-    "Java/POO/Pilares da POO/Herança.md",
-    "Java/Decorator Pattern.md",
     "Databases",
     "Java/API Date, Time e Calendar",
     "Java/Strings",
