@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Frameworks/Spring REST/Validações com Bean Validation.md",
+                "file": "Frameworks/Spring REST/Testes de Integração.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Validações com Bean Validation"
+              "title": "Testes de Integração"
             }
           }
         ]
@@ -188,9 +188,11 @@
   },
   "active": "e9825782aead2b33",
   "lastOpenFiles": [
+    "Frameworks/Spring REST/Validações com Bean Validation.md",
+    "Frameworks/Spring REST/Testes de Integração.md",
+    "Frameworks/Spring REST/Sem título",
     "Frameworks/Spring REST/Criando um projeto do zero.md",
     "Frameworks/Spring REST/Pool de Conexões e Flyway.md",
-    "Frameworks/Spring REST/Validações com Bean Validation.md",
     "Frameworks/Spring REST/Tratamento e modelagem de erros da API.md",
     "Java/Sintaxe Java/Terminal e Argumentos.md",
     "README.md",
@@ -226,14 +228,12 @@
     "Databases/JPA e Hibernate.md",
     "Clean Code/Padrão de projeto Repository.md",
     "Frameworks",
-    "Databases/SQL.md",
     "Databases",
     "Java/API Date, Time e Calendar",
     "Java/Strings",
     "Java/Enumerações",
     "Java/Generics",
     "Sem título 1",
-    "Java/Gerenciamento de Memória do Java/Sem título",
     "Sem título.canvas"
   ]
 }

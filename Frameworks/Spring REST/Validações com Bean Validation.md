@@ -1059,3 +1059,210 @@ private LocalDate dataNascimento;
 * **Flexibilidade:** Combinar constraints permite criar regras de validação complexas e personalizadas.
 * **Manutenibilidade:** Código mais organizado e fácil de entender.
 ---
+## Criando Constraints de Validação Customizadas com Implementação de ConstraintValidator
+
+**Entendendo o Processo**
+
+Ao criar constraints de validação customizadas, você amplia a flexibilidade do Bean Validation, permitindo a criação de regras de negócio específicas para sua aplicação. A implementação de `ConstraintValidator` é fundamental nesse processo, pois é ele quem define a lógica de validação propriamente dita.
+
+**Passo a Passo:**
+
+1. **Criar a Anotação:**
+   * **@Target:** Define onde a anotação pode ser aplicada (campos, métodos, etc.).
+   * **@Retention:** Define quando a anotação será retida (em tempo de execução).
+   * **@Constraint:** Liga a anotação a um validador e define atributos como mensagem de erro padrão.
+
+   ```java
+   @Target({ ElementType.FIELD })
+   @Retention(RetentionPolicy.RUNTIME)
+   @Constraint(validatedBy = { CustomValidator.class })
+   public @interface CustomConstraint {
+       String message() default "A validação customizada falhou";
+       Class<?>[] groups() default {};
+       Class<? extends Payload>[] payload() default {};
+   }
+   ```
+
+2. **Criar o Validador:**
+   * Implementar a interface `ConstraintValidator`.
+   * O método `initialize` recebe a anotação e permite configurar a validação.
+   * O método `isValid` realiza a lógica de validação e retorna `true` se o valor for válido, `false` caso contrário.
+
+   ```java
+   public class CustomValidator implements ConstraintValidator<CustomConstraint, String> {
+
+       @Override
+       public void initialize(CustomConstraint constraintAnnotation) {
+           // Configuração da validação
+       }
+
+       @Override
+       public boolean isValid(String value, ConstraintValidatorContext context) {
+           // Lógica de validação
+           if (value == null || value.isEmpty()) {
+               return false;
+           }
+           // ... outras validações
+           return true;
+       }
+   }
+   ```
+
+3. **Aplicar a Anotação:**
+   * Anote o campo que você deseja validar com a nova anotação.
+
+   ```java
+   @CustomConstraint
+   private String campoCustomizado;
+   ```
+
+**Exemplo Completo: Validando um CPF**
+
+```java
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = { CPFValidator.class })
+public @interface CPF {
+    String message() default "CPF inválido";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+
+public class CPFValidator implements ConstraintValidator<CPF, String> {
+
+    @Override
+    public boolean isValid(String cpf, ConstraintValidatorContext context) {
+        // Implementação da lógica de validação de CPF
+        // ...
+    }
+}
+```
+---
+## Criando Constraints de Validação Customizadas em Nível de Classe: Uma Abordagem Mais Profunda
+
+**Entendendo o Contexto**
+
+Quando falamos de **constraints de validação em nível de classe**, estamos nos referindo a regras de validação que se aplicam a um objeto inteiro, em vez de apenas a atributos individuais. Isso pode ser útil para validações mais complexas que envolvem a relação entre diferentes atributos de uma classe, ou para regras de negócio específicas que exigem uma visão holística do objeto.
+
+**Por que Criar Constraints em Nível de Classe?**
+
+* **Validações complexas:** Quando as regras de validação envolvem múltiplos atributos ou cálculos complexos, uma constraint em nível de classe oferece uma forma mais organizada e concisa de expressar essas regras.
+* **Regras de negócio específicas:** Para regras de negócio que são exclusivas de uma determinada classe ou entidade, uma constraint em nível de classe pode encapsular essa lógica de forma clara.
+* **Melhora da legibilidade do código:** Ao centralizar a lógica de validação em um único lugar, o código fica mais fácil de entender e manter.
+
+**Como Implementar Constraints em Nível de Classe**
+
+Embora o Bean Validation não ofereça uma anotação específica para validação em nível de classe, podemos criar uma solução personalizada utilizando os seguintes mecanismos:
+
+1. **Criar uma Interface de Validação:**
+   * Defina uma interface que represente a validação da classe.
+   * Anote essa interface com `@ConstraintValidatorContext`.
+   * Implemente métodos para realizar as validações e adicionar mensagens de erro ao contexto.
+
+2. **Implementar a Classe Validadora:**
+   * Implemente a interface criada no passo anterior.
+   * Realize as validações necessárias, acessando os atributos da classe através do objeto passado como parâmetro.
+   * Adicione mensagens de erro ao contexto utilizando `context.disableDefaultConstraintViolation()` e `context.buildConstraintViolationWithTemplate()`.
+
+3. **Aplicar a Validação:**
+   * Anote a classe com a anotação customizada que referencia o validador.
+   * Utilize um framework de validação como o Hibernate Validator para executar a validação.
+
+**Exemplo Prático: Validando uma Data de Nascimento**
+
+```java
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = { PessoaValidator.class })
+public @interface PessoaValida {
+    String message() default "A pessoa não é válida";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+
+public class PessoaValidator implements ConstraintValidator<PessoaValida, Pessoa> {
+
+    @Override
+    public void initialize(PessoaValida constraintAnnotation) {
+    }
+
+    @Override
+    public boolean isValid(Pessoa pessoa, ConstraintValidatorContext context) {
+        if (pessoa.getDataNascimento().isAfter(LocalDate.now())) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("A data de nascimento não pode ser futura")
+                    .addPropertyNode("dataNascimento")
+                    .addConstraintViolation();
+            return false;
+        }
+        // Outras validações...
+        return true;
+    }
+}
+
+@PessoaValida
+public class Pessoa {
+    private String nome;
+    private LocalDate dataNascimento;
+    // ... outros atributos
+}
+```
+---
+## Ajustando o Exception Handler para Adicionar Mensagens de Validação em Nível de Classe
+
+**Entendendo a Necessidade**
+
+Quando criamos validações em nível de classe, é crucial que as mensagens de erro sejam claras e informativas para o usuário. O `ExceptionHandler` é o componente responsável por interceptar exceções e fornecer uma resposta adequada, incluindo mensagens de erro personalizadas.
+
+**Como Ajustar o Exception Handler**
+
+1. **Identificar a Exceção:**
+   Ao criar uma validação em nível de classe, geralmente uma exceção específica é lançada quando a validação falha. Essa exceção pode ser uma `ConstraintViolationException` ou uma exceção personalizada.
+
+2. **Criar um Manipulador de Exceções Personalizado:**
+   Utilizando a anotação `@ExceptionHandler`, crie um método para tratar a exceção específica. Nesse método, você terá acesso à instância da exceção e poderá extrair as informações necessárias para construir a mensagem de erro.
+
+3. **Extrair as Mensagens de Erro:**
+   A `ConstraintViolationException` contém uma lista de violações, cada uma com sua própria mensagem. Você pode iterar sobre essa lista para construir uma mensagem de erro mais completa.
+
+4. **Construir a Resposta:**
+   Crie uma resposta personalizada com as mensagens de erro formatadas de acordo com suas necessidades. Essa resposta pode ser um objeto JSON, um XML ou qualquer outro formato adequado à sua aplicação.
+
+**Exemplo com Spring MVC e Thymeleaf:**
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintViolations(ConstraintViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errors.put(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+}
+```
+
+**Exemplo de utilização em uma view Thymeleaf:**
+
+```html
+<form th:object="${user}" th:if="${#fields.hasErrors('user')}" class="error">
+    <div th:each="err : ${#fields.errors('user')}" th:text="${err}"></div>
+</form>
+```
+
+**Personalizando as Mensagens**
+
+* **Mensagens Customizadas:** Utilize a propriedade `message` da anotação de validação para fornecer mensagens mais específicas.
+* **Interpolação:** Utilize expressões para inserir valores dinâmicos nas mensagens, como o nome do campo ou valores específicos.
+* **Mensagens Internacionalizadas:** Utilize `MessageSource` para carregar mensagens de diferentes idiomas.
+
+**Considerações Adicionais**
+
+* **Tipos de Exceções:** Dependendo da sua implementação, você pode precisar lidar com outros tipos de exceções, como `MethodArgumentNotValidException`.
+* **Níveis de Detalhe:** Ajuste o nível de detalhe das mensagens de erro de acordo com as necessidades do seu sistema.
+* **Formatação:** Utilize um formatador de mensagens para garantir a consistência e legibilidade das mensagens.
+* **Logs:** Registre as exceções em um log para facilitar a depuração.
+---
